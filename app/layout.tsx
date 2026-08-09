@@ -33,7 +33,7 @@ const fontDevanagari = Noto_Sans_Devanagari({
   display: "swap",
 });
 
-const SITE_URL = "https://www.azeelnews.com";
+const SITE_URL = "https://www.azeelnews.in";
 const SITE_NAME = "AZEEL NEWS";
 const SITE_DESCRIPTION =
   "AZEEL NEWS delivers fast, verified reporting on India and world affairs — politics, business, technology, sports and more, in English and Hindi.";

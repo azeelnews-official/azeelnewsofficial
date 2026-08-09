@@ -1,8 +1,5 @@
 import type { Config } from "tailwindcss";
 
-// AZEEL NEWS design tokens
-// Palette: ink navy (masthead/dark mode) + paper white + cobalt blue (brand) + press red (urgency)
-// Deliberately avoiding the generic cream/terracotta and pure near-black/neon-accent defaults.
 const config: Config = {
   darkMode: "class",
   content: [

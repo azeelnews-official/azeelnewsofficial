@@ -19,7 +19,7 @@ import {
 } from "@/lib/mock-data";
 
 export const metadata: Metadata = {
-  title: "Breaking News, India & World",
+  title: "Azeel News, India & World",
   description:
     "Live updates on India and world affairs — politics, business, technology, sports and entertainment, reported and verified by AZEEL NEWS.",
   alternates: { canonical: "/" },
@@ -29,7 +29,7 @@ const breadcrumbSchema = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Home", item: "https://www.azeelnews.com/" },
+    { "@type": "ListItem", position: 1, name: "Home", item: "https://www.azeelnews.in/" },
   ],
 };
 

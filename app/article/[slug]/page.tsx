@@ -24,7 +24,7 @@ import {
   mockComments,
 } from "@/lib/mock-data";
 
-const SITE_URL = "https://www.azeelnews.com";
+const SITE_URL = "https://www.azeelnews.in";
 
 export function generateStaticParams() {
   return getAllArticles().map((a) => ({ slug: a.slug }));

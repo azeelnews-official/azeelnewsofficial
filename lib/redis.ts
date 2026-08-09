@@ -1,18 +1,12 @@
-import Redis from "ioredis";
+import { Redis } from "@upstash/redis";
 
-// Reuse a single Redis connection across hot reloads in development, same
-// rationale as lib/prisma.ts. Used for: trending/most-read caching (short
-// TTL over expensive aggregate queries), API rate limiting (login, comment
-// posting, search), and short-lived tokens (password reset, email verify)
-// where a full Postgres round-trip isn't worth it.
-const globalForRedis = globalThis as unknown as { redis?: Redis };
+const globalForRedis = globalThis as unknown as {
+  redis?: Redis;
+};
 
 export const redis =
   globalForRedis.redis ??
-  new Redis(process.env.REDIS_URL ?? "redis://localhost:6379", {
-    lazyConnect: true,
-    maxRetriesPerRequest: 3,
-  });
+  Redis.fromEnv();
 
 if (process.env.NODE_ENV !== "production") {
   globalForRedis.redis = redis;
@@ -25,12 +19,37 @@ export async function cacheGetOrSet<T>(
   loader: () => Promise<T>,
   ttlSeconds: number = DEFAULT_TTL_SECONDS
 ): Promise<T> {
-  const cached = await redis.get(key);
-  if (cached) return JSON.parse(cached) as T;
+  try {
+    const cached = await redis.get<string>(key);
 
-  const fresh = await loader();
-  await redis.set(key, JSON.stringify(fresh), "EX", ttlSeconds);
-  return fresh;
+    if (cached !== null) {
+      return typeof cached === "string"
+        ? JSON.parse(cached) as T
+        : cached as T;
+    }
+
+    const fresh = await loader();
+
+    try {
+      await redis.set(key, JSON.stringify(fresh), {
+        ex: ttlSeconds,
+      });
+    } catch (error) {
+      console.warn(
+        "[Redis] cache write failed:",
+        error instanceof Error ? error.message : error
+      );
+    }
+
+    return fresh;
+  } catch (error) {
+    console.warn(
+      "[Redis] cache unavailable, using database:",
+      error instanceof Error ? error.message : error
+    );
+
+    return loader();
+  }
 }
 
 export async function rateLimit(
@@ -38,7 +57,26 @@ export async function rateLimit(
   limit: number,
   windowSeconds: number
 ): Promise<{ allowed: boolean; remaining: number }> {
-  const count = await redis.incr(key);
-  if (count === 1) await redis.expire(key, windowSeconds);
-  return { allowed: count <= limit, remaining: Math.max(0, limit - count) };
+  try {
+    const count = await redis.incr(key);
+
+    if (count === 1) {
+      await redis.expire(key, windowSeconds);
+    }
+
+    return {
+      allowed: count <= limit,
+      remaining: Math.max(0, limit - count),
+    };
+  } catch (error) {
+    console.warn(
+      "[Redis] rate limiting unavailable; allowing request:",
+      error instanceof Error ? error.message : error
+    );
+
+    return {
+      allowed: true,
+      remaining: limit,
+    };
+  }
 }
