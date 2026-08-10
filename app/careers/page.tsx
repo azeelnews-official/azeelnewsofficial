@@ -5,10 +5,10 @@ import { StaticPageLayout } from "@/components/pages/StaticPageLayout";
 export const metadata: Metadata = { title: "Careers", alternates: { canonical: "/careers" } };
 
 const OPEN_ROLES = [
-  { title: "Staff Correspondent — Politics", location: "New Delhi", type: "Full-time" },
-  { title: "Business Desk Reporter", location: "Mumbai", type: "Full-time" },
-  { title: "Video Producer", location: "Bengaluru", type: "Full-time" },
-  { title: "Frontend Engineer (Next.js)", location: "Remote (India)", type: "Full-time" },
+  { title: "Staff Correspondent — Politics", location: "Remote (India)", type: "Part-time" },
+  { title: "Business Desk Reporter", location: "Remote (India)", type: "Part-time" },
+  { title: "Video Editor", location: "Remote (India)", type: "Part-time" },
+  { title: "Frontend Engineer (Next.js)", location: "Remote (India)", type: "Part-time" },
 ];
 
 export default function CareersPage() {
