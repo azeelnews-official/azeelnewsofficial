@@ -6,10 +6,10 @@ import { WeatherWidget } from "./WeatherWidget";
 import { useLanguage } from "@/components/i18n/LanguageProvider";
 
 const SOCIAL_LINKS = [
-  { icon: Facebook, label: "Facebook", href: "https://facebook.com/azeelnews" },
   { icon: Instagram, label: "Instagram", href: "https://instagram.com/azeelnews" },
-  { icon: Youtube, label: "YouTube", href: "https://youtube.com/@azeelnews" },
   { icon: Linkedin, label: "LinkedIn", href: "https://linkedin.com/company/azeelnews" },
+  { icon: Youtube, label: "YouTube", href: "https://youtube.com/@azeelnews" },
+  { icon: Facebook, label: "Facebook", href: "https://facebook.com/azeelnews" },
   { icon: Send, label: "Telegram", href: "https://t.me/azeelnews" },
 ];
 
