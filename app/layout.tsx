@@ -120,11 +120,11 @@ const organizationSchema = {
   url: SITE_URL,
   logo: `${SITE_URL}/logo.png`,
   sameAs: [
-    "https://facebook.com/azeelnews",
     "https://instagram.com/azeelnews",
+    "https://linkedin.com/company/azeelnews",
+    "https://facebook.com/azeelnews",
     "https://twitter.com/azeelnews",
     "https://youtube.com/@azeelnews",
-    "https://linkedin.com/company/azeelnews",
   ],
 };
 
