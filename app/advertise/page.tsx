@@ -13,10 +13,10 @@ export const metadata: Metadata = {
 };
 
 const PLACEMENTS = [
-  { name: "Leaderboard", size: "970×90 / 728×90", location: "Top of every page", price: "₹40 CPM" },
-  { name: "Sidebar", size: "300×250", location: "Article & category sidebar", price: "₹35 CPM" },
-  { name: "Inline", size: "728×200", location: "Between article paragraphs", price: "₹45 CPM" },
-  { name: "Native", size: "Content card", location: "Home & category feeds", price: "₹60 CPM" },
+  { name: "Leaderboard", size: "970×90 / 728×90", location: "Top of every page", price: "₹20 CPM" },
+  { name: "Sidebar", size: "300×250", location: "Article & category sidebar", price: "₹25 CPM" },
+  { name: "Inline", size: "728×200", location: "Between article paragraphs", price: "₹25 CPM" },
+  { name: "Native", size: "Content card", location: "Home & category feeds", price: "₹30 CPM" },
 ];
 
 export default function AdvertisePage() {
@@ -32,9 +32,9 @@ export default function AdvertisePage() {
         </p>
 
         <div className="mb-10 grid gap-4 sm:grid-cols-3">
-          <StatCard icon={Users} label="Monthly Readers" value="4.8M+" />
+          <StatCard icon={Users} label="Monthly Readers" value="1.4M+" />
           <StatCard icon={TrendingUp} label="Avg. Session" value="3m 40s" />
-          <StatCard icon={MousePointerClick} label="Avg. CTR" value="1.2%" />
+          <StatCard icon={MousePointerClick} label="Avg. CTR" value="1.1%" />
         </div>
 
         <h2 className="mb-4 font-display text-xl font-bold text-ink-950">Ad Placements &amp; Rates</h2>
