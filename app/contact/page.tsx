@@ -8,10 +8,10 @@ import { Footer } from "@/components/layout/Footer";
 import { CookieConsent } from "@/components/layout/CookieConsent";
 
 const SOCIAL_LINKS = [
-  { icon: Facebook, label: "Facebook", href: "https://facebook.com/azeelnews" },
   { icon: Instagram, label: "Instagram", href: "https://instagram.com/azeelnews" },
-  { icon: Youtube, label: "YouTube", href: "https://youtube.com/@azeelnews" },
   { icon: Linkedin, label: "LinkedIn", href: "https://linkedin.com/company/azeelnews" },
+  { icon: Facebook, label: "Facebook", href: "https://facebook.com/azeelnews" },
+  { icon: Youtube, label: "YouTube", href: "https://youtube.com/@azeelnews" },
   { icon: Send, label: "Telegram", href: "https://t.me/azeelnews" },
 ];
 
@@ -39,8 +39,8 @@ export default function ContactPage() {
           <div className="flex flex-col gap-5">
             <ContactCard icon={Mail} label="Editorial" value="contact@azeelnews.in" href="mailto:contact@azeelnews.in" />
             <ContactCard icon={Mail} label="Advertising" value="ads@azeelnews.in" href="mailto:ads@azeelnews.in" />
-            <ContactCard icon={Phone} label="Newsroom" value="+91 98765 43210" href="tel:+919876543210" />
-            <ContactCard icon={MapPin} label="Office" value="Connaught Place, New Delhi, India" />
+            <ContactCard icon={Phone} label="Newsroom" value="+91 6009590154" href="tel:+916009590154" />
+           <ContactCard icon={MapPin} label="Office" value="New Delhi, India" />  
 
             <div>
               <p className="mb-2 text-sm font-semibold text-ink-800">Follow us</p>
