@@ -49,6 +49,8 @@ export interface Comment {
   postedAt: string;
   text: string;
   likes: number;
+  liked: boolean;
+  canDelete: boolean;
   status: "approved" | "pending" | "spam";
 }
 

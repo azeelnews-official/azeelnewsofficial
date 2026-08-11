@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+
 import { TopBar } from "@/components/layout/TopBar";
 import { Header } from "@/components/layout/Header";
 import { BreakingTicker } from "@/components/layout/BreakingTicker";
@@ -10,43 +11,94 @@ import { TrendingSidebar } from "@/components/home/TrendingSidebar";
 import { CategorySection } from "@/components/home/CategorySection";
 import { VideoGallery } from "@/components/home/VideoGallery";
 import { AdSlot } from "@/components/home/AdSlot";
+
 import {
-  heroArticle,
-  topStories,
-  trending,
-  categoryFeeds,
-  tickerItems,
-} from "@/lib/mock-data";
+  getPublishedArticlesAsArticles,
+  getPublishedArticlesByCategoryAsArticles,
+} from "@/lib/content/articles";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export const metadata: Metadata = {
   title: "Azeel News, India & World",
   description:
     "Live updates on India and world affairs — politics, business, technology, sports and entertainment, reported and verified by AZEEL NEWS.",
-  alternates: { canonical: "/" },
+  alternates: {
+    canonical: "/",
+  },
 };
 
 const breadcrumbSchema = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Home", item: "https://www.azeelnews.in/" },
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Home",
+      item: "https://www.azeelnews.in/",
+    },
   ],
 };
 
-export default function HomePage() {
+export default async function HomePage() {
+  const allArticles = await getPublishedArticlesAsArticles(50);
+
+  const heroArticle = allArticles[0];
+
+  const topStories = allArticles.slice(1, 7);
+
+  const trending = allArticles.slice(0, 5);
+
+  const world = await getPublishedArticlesByCategoryAsArticles(
+    "world",
+    4
+  );
+
+  const business = await getPublishedArticlesByCategoryAsArticles(
+    "business",
+    4
+  );
+
+  const technology =
+    await getPublishedArticlesByCategoryAsArticles(
+      "technology",
+      4
+    );
+
+  const breakingArticles = allArticles.filter(
+    (article) => article.isBreaking
+  );
+
+  const tickerItems = breakingArticles
+    .slice(0, 8)
+    .map((article) => ({
+      id: article.id,
+      text: article.headline,
+      href: `/article/${article.slug}`,
+    }));
+
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbSchema),
+        }}
       />
 
       <TopBar />
       <Header />
-      <BreakingTicker items={tickerItems} />
+
+      {tickerItems.length > 0 && (
+        <BreakingTicker items={tickerItems} />
+      )}
 
       <main id="main-content">
-        <HeroSection article={heroArticle} />
+        {heroArticle && (
+          <HeroSection article={heroArticle} />
+        )}
 
         <div className="mx-auto max-w-[1400px] px-4">
           <div className="py-6">
@@ -58,27 +110,48 @@ export default function HomePage() {
               <h2 className="mb-6 border-b-2 border-ink-950 pb-3 font-display text-2xl font-bold text-ink-950">
                 Top Stories
               </h2>
-              <div className="grid gap-8 sm:grid-cols-2">
-                {topStories.map((article) => (
-                  <ArticleCard key={article.id} article={article} />
-                ))}
-              </div>
+
+              {topStories.length > 0 ? (
+                <div className="grid gap-8 sm:grid-cols-2">
+                  {topStories.map((article) => (
+                    <ArticleCard
+                      key={article.id}
+                      article={article}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <p className="text-sm text-ink-400">
+                  No published stories yet.
+                </p>
+              )}
             </div>
 
             <div className="flex flex-col gap-8">
               <TrendingSidebar articles={trending} />
+
               <AdSlot size="sidebar" />
             </div>
           </div>
 
-          <CategorySection categorySlug="world" articles={categoryFeeds.world} />
-          <CategorySection categorySlug="business" articles={categoryFeeds.business} />
+          <CategorySection
+            categorySlug="world"
+            articles={world}
+          />
+
+          <CategorySection
+            categorySlug="business"
+            articles={business}
+          />
 
           <div className="py-6">
             <AdSlot size="inline" />
           </div>
 
-          <CategorySection categorySlug="technology" articles={categoryFeeds.technology} />
+          <CategorySection
+            categorySlug="technology"
+            articles={technology}
+          />
         </div>
 
         <VideoGallery articles={trending} />

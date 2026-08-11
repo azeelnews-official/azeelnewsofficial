@@ -892,6 +892,8 @@ export const mockComments: Record<string, Comment[]> = {
       postedAt: new Date(Date.now() - 25 * 60 * 1000).toISOString(),
       text: "Good that the compliance window was extended — smaller platforms genuinely needed the runway.",
       likes: 14,
+      liked: false,
+      canDelete: false,
       status: "approved",
     },
     {
@@ -901,6 +903,8 @@ export const mockComments: Record<string, Comment[]> = {
       postedAt: new Date(Date.now() - 18 * 60 * 1000).toISOString(),
       text: "Would like to see the cross-border transfer rules published sooner rather than later.",
       likes: 6,
+      liked: false,
+      canDelete: false,
       status: "approved",
     },
     {
@@ -910,6 +914,8 @@ export const mockComments: Record<string, Comment[]> = {
       postedAt: new Date(Date.now() - 6 * 60 * 1000).toISOString(),
       text: "First!! check out my page for FREE crypto giveaways link in bio",
       likes: 0,
+      liked: false,
+      canDelete: false,
       status: "spam",
     },
   ],
@@ -921,6 +927,8 @@ export const mockComments: Record<string, Comment[]> = {
       postedAt: new Date(Date.now() - 90 * 60 * 1000).toISOString(),
       text: "Surprised the dissent came from an external member rather than an RBI staffer — worth watching next quarter.",
       likes: 9,
+      liked: false,
+      canDelete: false,
       status: "approved",
     },
     {
@@ -930,6 +938,8 @@ export const mockComments: Record<string, Comment[]> = {
       postedAt: new Date(Date.now() - 40 * 60 * 1000).toISOString(),
       text: "Would help to see the dissenting member's reasoning published in full.",
       likes: 3,
+      liked: false,
+      canDelete: false,
       status: "pending",
     },
   ],
@@ -941,8 +951,9 @@ export const mockComments: Record<string, Comment[]> = {
       postedAt: new Date(Date.now() - 45 * 60 * 1000).toISOString(),
       text: "Good to see uncapped players getting a look — squad depth has been thin for a while.",
       likes: 21,
+      liked: false,
+      canDelete: false,
       status: "pending",
     },
   ],
 };
-

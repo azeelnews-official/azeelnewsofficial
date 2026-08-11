@@ -1,7 +1,56 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { PostEditorForm } from "@/components/admin/editor/PostEditorForm";
-import { getArticleBySlug, getAdminPosts } from "@/lib/mock-data";
+import { prisma } from "@/lib/prisma";
+import { getCurrentSession } from "@/lib/auth/session";
+import type { CategorySlug } from "@/lib/types";
+
+export const dynamic = "force-dynamic";
+
+const CATEGORY_SLUGS: CategorySlug[] = [
+  "india",
+  "world",
+  "politics",
+  "business",
+  "technology",
+  "sports",
+  "entertainment",
+  "health",
+  "explainers",
+];
+
+function isCategorySlug(
+  value: string
+): value is CategorySlug {
+  return CATEGORY_SLUGS.includes(
+    value as CategorySlug
+  );
+}
+
+function getEditorStatus(
+  status:
+    | "DRAFT"
+    | "SCHEDULED"
+    | "PUBLISHED"
+    | "ARCHIVED"
+) {
+  switch (status) {
+    case "PUBLISHED":
+      return "published" as const;
+
+    case "SCHEDULED":
+      return "scheduled" as const;
+
+    case "DRAFT":
+      return "draft" as const;
+
+    case "ARCHIVED":
+      return "draft" as const;
+
+    default:
+      return "draft" as const;
+  }
+}
 
 export async function generateMetadata({
   params,
@@ -9,8 +58,21 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const article = getArticleBySlug(slug);
-  return { title: article ? `Edit — ${article.headline}` : "Edit Post" };
+
+  const post = await prisma.post.findUnique({
+    where: {
+      slug,
+    },
+    select: {
+      headline: true,
+    },
+  });
+
+  return {
+    title: post
+      ? `Edit — ${post.headline}`
+      : "Edit Post",
+  };
 }
 
 export default async function EditPostPage({
@@ -18,25 +80,111 @@ export default async function EditPostPage({
 }: {
   params: Promise<{ slug: string }>;
 }) {
-  const { slug } = await params;
-  const article = getArticleBySlug(slug);
-  if (!article) notFound();
+  /*
+   * -------------------------
+   * Authentication
+   * -------------------------
+   */
 
-  const adminPost = getAdminPosts().find((p) => p.slug === slug);
+  const session = await getCurrentSession();
+
+  if (
+    !session ||
+    !["JOURNALIST", "EDITOR", "ADMIN"].includes(
+      session.role
+    )
+  ) {
+    redirect("/login");
+  }
+
+  /*
+   * -------------------------
+   * Get real post
+   * -------------------------
+   */
+
+  const { slug } = await params;
+
+  const post = await prisma.post.findUnique({
+    where: {
+      slug,
+    },
+    include: {
+      category: true,
+      tags: {
+        include: {
+          tag: true,
+        },
+      },
+    },
+  });
+
+  if (!post) {
+    notFound();
+  }
+
+  /*
+   * -------------------------
+   * Convert category
+   * -------------------------
+   */
+
+  const categorySlug = post.category
+    .slug;
+
+  const category: CategorySlug =
+    isCategorySlug(categorySlug)
+      ? categorySlug
+      : "india";
+
+  /*
+   * -------------------------
+   * Convert tags
+   * -------------------------
+   */
+
+  const tags = post.tags.map(
+    (postTag) => postTag.tag.name
+  );
+
+  /*
+   * -------------------------
+   * Convert scheduled date
+   * -------------------------
+   */
+
+  const scheduledAt =
+    post.scheduledAt
+      ? post.scheduledAt
+          .toISOString()
+          .slice(0, 16)
+      : "";
+
+  /*
+   * -------------------------
+   * Render editor
+   * -------------------------
+   */
 
   return (
     <PostEditorForm
       mode="edit"
       initialValues={{
-        title: article.headline,
-        slug: article.slug,
-        category: article.category,
-        tags: article.tags ?? [],
-        featuredImageUrl: article.imageUrl,
-        body: (article.body ?? []).join("\n\n"),
-        metaDescription: article.dek,
-        status: adminPost?.status ?? "published",
-        location: article.location ?? "",
+        id: post.id,
+        title: post.headline,
+        slug: post.slug,
+        category,
+        tags,
+        featuredImageUrl:
+          post.featuredImageUrl,
+        body: post.body,
+        metaDescription:
+          post.metaDescription ??
+          post.dek,
+        status: getEditorStatus(
+          post.status
+        ),
+        scheduledAt,
       }}
     />
   );
