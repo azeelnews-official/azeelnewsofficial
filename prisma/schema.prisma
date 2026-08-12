@@ -1,7 +1,3 @@
-// AZEEL NEWS — Prisma schema
-// PostgreSQL primary datastore.
-// Redis can be used separately for caching/rate limiting/session storage.
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -55,48 +51,74 @@ enum Locale {
 // ---------- Auth ----------
 
 model User {
-  id            String    @id @default(cuid())
-  name          String
-  email         String    @unique
-  passwordHash  String?
-  image         String?
-  role          Role      @default(READER)
-  emailVerified DateTime?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  id String @id @default(cuid())
 
-  accounts     Account[]
-  sessions     Session[]
-  posts        Post[]        @relation("PostAuthor")
-  comments     Comment[]
+  name String
+
+  email String @unique
+
+  passwordHash String?
+
+  image String?
+
+  role Role @default(READER)
+
+  emailVerified DateTime?
+
+  createdAt DateTime @default(now())
+
+  updatedAt DateTime @updatedAt
+
+  accounts Account[]
+
+  sessions Session[]
+
+  posts Post[] @relation("PostAuthor")
+
+  comments Comment[]
+
   commentLikes CommentLike[]
-  bookmarks    Bookmark[]
-  auditLogs    AuditLog[]
+
+  bookmarks Bookmark[]
+
+  auditLogs AuditLog[]
 
   @@index([role])
 }
 
 model Account {
-  id                String  @id @default(cuid())
-  userId            String
-  provider          String
+  id String @id @default(cuid())
+
+  userId String
+
+  provider String
+
   providerAccountId String
-  accessToken       String? @db.Text
-  refreshToken      String? @db.Text
-  expiresAt         Int?
-  tokenType         String?
-  scope             String?
+
+  accessToken String? @db.Text
+
+  refreshToken String? @db.Text
+
+  expiresAt Int?
+
+  tokenType String?
+
+  scope String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+  @@index([userId])
 }
 
 model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique
-  userId       String
-  expires      DateTime
+  id String @id @default(cuid())
+
+  sessionToken String @unique
+
+  userId String
+
+  expires DateTime
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -104,12 +126,17 @@ model Session {
 }
 
 model PasswordResetToken {
-  id        String    @id @default(cuid())
-  email     String
-  token     String    @unique
+  id String @id @default(cuid())
+
+  email String
+
+  token String @unique
+
   expiresAt DateTime
-  usedAt    DateTime?
-  createdAt DateTime  @default(now())
+
+  usedAt DateTime?
+
+  createdAt DateTime @default(now())
 
   @@index([email])
 }
@@ -117,128 +144,184 @@ model PasswordResetToken {
 // ---------- Content ----------
 
 model Category {
-  id     String @id @default(cuid())
-  slug   String @unique
-  name   String
+  id String @id @default(cuid())
+
+  slug String @unique
+
+  name String
+
   nameHi String
-  posts  Post[]
+
+  posts Post[]
+
+  @@index([slug])
 }
 
 model Tag {
-  id    String    @id @default(cuid())
-  slug  String    @unique
-  name  String
+  id String @id @default(cuid())
+
+  slug String @unique
+
+  name String
+
   posts PostTag[]
+
+  @@index([slug])
 }
 
 model Post {
-  id               String     @id @default(cuid())
-  slug             String     @unique
-  headline         String
-  dek              String     @db.Text
-  body             String     @db.Text
-  status           PostStatus @default(DRAFT)
+  id String @id @default(cuid())
+
+  slug String @unique
+
+  headline String
+
+  dek String @db.Text
+
+  body String @db.Text
+
+  status PostStatus @default(DRAFT)
+
   featuredImageUrl String
+
   featuredImageAlt String
-  metaDescription  String?
-  readingTimeMin   Int        @default(3)
-  views            Int        @default(0)
-  isBreaking       Boolean    @default(false)
-  isLive           Boolean    @default(false)
-  locale           Locale     @default(EN)
+
+  metaDescription String?
+
+  readingTimeMin Int @default(3)
+
+  views Int @default(0)
+
+  isBreaking Boolean @default(false)
+
+  isLive Boolean @default(false)
+
+  locale Locale @default(EN)
 
   publishedAt DateTime?
+
   scheduledAt DateTime?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
 
-  authorId   String
-  author     User     @relation("PostAuthor", fields: [authorId], references: [id])
+  createdAt DateTime @default(now())
+
+  updatedAt DateTime @updatedAt
+
+  authorId String
+
+  author User @relation("PostAuthor", fields: [authorId], references: [id])
+
   categoryId String
-  category   Category @relation(fields: [categoryId], references: [id])
 
-  tags      PostTag[]
-  comments  Comment[]
+  category Category @relation(fields: [categoryId], references: [id])
+
+  tags PostTag[]
+
+  comments Comment[]
+
   bookmarks Bookmark[]
-  media     Media[]
 
+  media Media[]
+
+  // IMPORTANT SPEED INDEXES
+
+  @@index([status])
   @@index([status, publishedAt])
   @@index([categoryId])
+  @@index([categoryId, status])
+  @@index([publishedAt])
+  @@index([slug, status])
 }
 
 model PostTag {
   postId String
-  tagId  String
+
+  tagId String
 
   post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
-  tag  Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  tag Tag @relation(fields: [tagId], references: [id], onDelete: Cascade)
 
   @@id([postId, tagId])
+  @@index([tagId])
 }
 
 // ---------- Comments ----------
 
 model Comment {
-  id        String   @id @default(cuid())
-  text      String   @db.Text
-  likes     Int      @default(0)
+  id String @id @default(cuid())
+
+  text String @db.Text
+
+  likes Int @default(0)
+
   createdAt DateTime @default(now())
 
   postId String
-  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
 
   authorId String
-  author   User   @relation(fields: [authorId], references: [id])
 
-  parentId String?
-  parent   Comment?  @relation("CommentReplies", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  replies  Comment[] @relation("CommentReplies")
+  author User @relation(fields: [authorId], references: [id])
 
   likesByUsers CommentLike[]
 
   @@index([postId])
+  @@index([postId, createdAt])
   @@index([authorId])
   @@index([createdAt])
 }
 
 model CommentLike {
-  id        String   @id @default(cuid())
+  id String @id @default(cuid())
+
   createdAt DateTime @default(now())
 
   commentId String
-  comment   Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+
+  comment Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
 
   userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([commentId, userId])
   @@index([userId])
 }
 
 model Bookmark {
-  id        String   @id @default(cuid())
+  id String @id @default(cuid())
+
   createdAt DateTime @default(now())
 
   userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   postId String
-  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
 
   @@unique([userId, postId])
+  @@index([postId])
 }
 
 // ---------- Media ----------
 
 model Media {
-  id        String    @id @default(cuid())
-  url       String
-  type      MediaType
-  altText   String?
-  createdAt DateTime  @default(now())
+  id String @id @default(cuid())
+
+  url String
+
+  type MediaType
+
+  altText String?
+
+  createdAt DateTime @default(now())
 
   postId String?
-  post   Post?   @relation(fields: [postId], references: [id], onDelete: SetNull)
+
+  post Post? @relation(fields: [postId], references: [id], onDelete: SetNull)
 
   @@index([postId])
 }
@@ -246,57 +329,79 @@ model Media {
 // ---------- Monetization ----------
 
 model Advertisement {
-  id          String      @id @default(cuid())
-  name        String
-  placement   AdPlacement
-  imageUrl    String
-  targetUrl   String
-  status      AdStatus    @default(ACTIVE)
-  startDate   DateTime?
-  endDate     DateTime?
-  impressions Int         @default(0)
-  clicks      Int         @default(0)
-  createdAt   DateTime    @default(now())
+  id String @id @default(cuid())
+
+  name String
+
+  placement AdPlacement
+
+  imageUrl String
+
+  targetUrl String
+
+  status AdStatus @default(ACTIVE)
+
+  startDate DateTime?
+
+  endDate DateTime?
+
+  impressions Int @default(0)
+
+  clicks Int @default(0)
+
+  createdAt DateTime @default(now())
 
   @@index([placement, status])
 }
 
-// ---------- Engagement ----------
-
 model NewsletterSubscriber {
-  id           String   @id @default(cuid())
-  email        String   @unique
-  active       Boolean  @default(true)
+  id String @id @default(cuid())
+
+  email String @unique
+
+  active Boolean @default(true)
+
   subscribedAt DateTime @default(now())
 }
 
-// ---------- Site management ----------
-
 model Redirect {
-  id         String @id @default(cuid())
-  fromPath   String @unique
-  toPath     String
-  statusCode Int    @default(301)
+  id String @id @default(cuid())
+
+  fromPath String @unique
+
+  toPath String
+
+  statusCode Int @default(301)
 }
 
 model Page {
-  id        String   @id @default(cuid())
-  slug      String   @unique
-  title     String
-  content   String   @db.Text
+  id String @id @default(cuid())
+
+  slug String @unique
+
+  title String
+
+  content String @db.Text
+
   updatedAt DateTime @updatedAt
 }
 
 model AuditLog {
-  id         String   @id @default(cuid())
-  action     String
+  id String @id @default(cuid())
+
+  action String
+
   entityType String
-  entityId   String
-  metadata   Json?
-  createdAt  DateTime @default(now())
+
+  entityId String
+
+  metadata Json?
+
+  createdAt DateTime @default(now())
 
   userId String
-  user   User   @relation(fields: [userId], references: [id])
+
+  user User @relation(fields: [userId], references: [id])
 
   @@index([entityType, entityId])
   @@index([userId])

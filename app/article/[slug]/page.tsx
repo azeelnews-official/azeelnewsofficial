@@ -3,9 +3,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChevronRight } from "lucide-react";
+import { unstable_cache } from "next/cache";
 
 import { prisma } from "@/lib/prisma";
-import { getCurrentSession } from "@/lib/auth/session";
 import type { Article, CategorySlug, Comment } from "@/lib/types";
 
 import { TopBar } from "@/components/layout/TopBar";
@@ -24,484 +24,557 @@ import { GoogleNewsFollow } from "@/components/article/GoogleNewsFollow";
 
 const SITE_URL = "https://www.azeelnews.in";
 
-/**
- * This page must always read published articles from Prisma.
- * Do not use mock-data here.
- */
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export const revalidate = 60;
 
-/**
- * Convert Markdown body into the paragraph format expected
- * by ArticleInteractive.
- */
-function bodyToParagraphs(body: string): string[] {
+function bodyToParagraphs(body:string):string[]{
   return body
     .split(/\n\s*\n/)
-    .map((paragraph) =>
-      paragraph
-        .replace(/^#{1,6}\s+/gm, "")
-        .replace(/^\s*[-*]\s+/gm, "")
-        .replace(/^\s*\d+\.\s+/gm, "")
-        .trim()
+    .map((p)=>
+      p
+      .replace(/^#{1,6}\s+/gm,"")
+      .replace(/^\s*[-*]\s+/gm,"")
+      .trim()
     )
     .filter(Boolean);
 }
 
-/**
- * Create a safe author slug when the database User model
- * does not have a dedicated slug field.
- */
-function createAuthorSlug(name: string): string {
+function createAuthorSlug(name:string){
   return name
     .toLowerCase()
     .trim()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
+    .replace(/[^a-z0-9]+/g,"-")
+    .replace(/^-+|-+$/g,"");
 }
 
-/**
- * Convert a Prisma Post into the Article shape already expected
- * by the existing frontend components.
- */
-function mapPostToArticle(post: {
-  id: string;
-  slug: string;
-  headline: string;
-  dek: string;
-  body: string;
-  featuredImageUrl: string;
-  featuredImageAlt: string;
-  readingTimeMin: number;
-  views: number;
-  isBreaking: boolean;
-  isLive: boolean;
-  publishedAt: Date | null;
-  updatedAt: Date;
-  author: {
-    name: string;
-    image: string | null;
-    role: string;
-  };
-  category: {
-    slug: string;
-    name: string;
-  };
-  tags: {
-    tag: {
-      name: string;
-    };
-  }[];
-}): Article {
+function mapPostToArticle(post:any):Article{
   return {
-    id: post.id,
-    slug: post.slug,
-    headline: post.headline,
-    dek: post.dek,
+    id:post.id,
+    slug:post.slug,
+    headline:post.headline,
+    dek:post.dek,
 
-    category: post.category.slug as CategorySlug,
+    category:post.category.slug as CategorySlug,
 
-    author: {
-      name: post.author.name,
-      slug: createAuthorSlug(post.author.name),
-      role: post.author.role,
-      avatarUrl: post.author.image ?? "",
+    author:{
+      name:post.author.name,
+      slug:createAuthorSlug(post.author.name),
+      role:post.author.role,
+      avatarUrl:post.author.image ?? "",
     },
 
-    publishedAt: (
-      post.publishedAt ??
-      post.updatedAt
-    ).toISOString(),
+    publishedAt:(post.publishedAt ?? post.updatedAt).toISOString(),
 
-    updatedAt: post.updatedAt.toISOString(),
+    updatedAt:post.updatedAt.toISOString(),
 
-    readingTimeMin: post.readingTimeMin,
+    readingTimeMin:post.readingTimeMin,
 
-    imageUrl: post.featuredImageUrl,
-    imageAlt: post.featuredImageAlt,
+    imageUrl:post.featuredImageUrl,
+    imageAlt:post.featuredImageAlt,
 
-    isLive: post.isLive,
-    isBreaking: post.isBreaking,
-    views: post.views,
+    isLive:post.isLive,
+    isBreaking:post.isBreaking,
 
-    tags: post.tags.map((item) => item.tag.name),
+    views:post.views,
 
-    body: bodyToParagraphs(post.body),
+    tags:post.tags.map((x:any)=>x.tag.name),
+
+    body:bodyToParagraphs(post.body),
   };
 }
+const getArticle = unstable_cache(
+  async (slug:string) => {
 
-/**
- * Get one published article directly from Prisma.
- */
-async function getPublishedArticle(slug: string) {
-  return prisma.post.findFirst({
-    where: {
-      slug,
-      status: "PUBLISHED",
-    },
-    include: {
-      author: true,
-      category: true,
-      tags: {
-        include: {
-          tag: true,
-        },
+    return prisma.post.findFirst({
+
+      where:{
+        slug,
+        status:"PUBLISHED"
       },
-    },
-  });
-}
 
-/**
- * Generate metadata from the real database article.
- */
+      select:{
+
+        id:true,
+        slug:true,
+        headline:true,
+        dek:true,
+        body:true,
+
+        featuredImageUrl:true,
+        featuredImageAlt:true,
+
+        readingTimeMin:true,
+        views:true,
+
+        isBreaking:true,
+        isLive:true,
+
+        publishedAt:true,
+        updatedAt:true,
+
+
+        author:{
+          select:{
+            name:true,
+            image:true,
+            role:true
+          }
+        },
+
+
+        category:{
+          select:{
+            slug:true,
+            name:true
+          }
+        },
+
+
+        tags:{
+          select:{
+            tag:{
+              select:{
+                name:true
+              }
+            }
+          }
+        }
+
+      }
+
+    });
+
+  },
+
+  ["article-cache"],
+
+  {
+    revalidate:60
+  }
+
+);
+
+
 export async function generateMetadata({
   params,
-}: {
-  params: Promise<{ slug: string }>;
-}): Promise<Metadata> {
-  const { slug } = await params;
+}:{
+  params:Promise<{slug:string}>
+}):Promise<Metadata>{
 
-  const post = await getPublishedArticle(slug);
+  const {slug}=await params;
 
-  if (!post) {
+  const post:any = await getArticle(slug);
+
+  if(!post){
     return {};
   }
 
-  const article = mapPostToArticle(post);
 
   return {
-    title: article.headline,
-    description: article.dek,
 
-    alternates: {
-      canonical: `/article/${article.slug}`,
+    title:post.headline,
+
+    description:post.dek,
+
+
+    alternates:{
+      canonical:`/article/${slug}`
     },
 
-    authors: [
-      {
-        name: article.author.name,
-      },
-    ],
 
-    openGraph: {
-      type: "article",
-      title: article.headline,
-      description: article.dek,
-      url: `${SITE_URL}/article/${article.slug}`,
+    openGraph:{
 
-      publishedTime: article.publishedAt,
-      modifiedTime: article.updatedAt,
+      type:"article",
 
-      authors: [article.author.name],
+      title:post.headline,
 
-      section: post.category.name,
+      description:post.dek,
 
-      tags: article.tags,
+      url:`${SITE_URL}/article/${slug}`,
 
-      images: [
+      images:[
         {
-          url: article.imageUrl,
-          width: 1200,
-          height: 800,
-          alt: article.imageAlt,
-        },
-      ],
+          url:post.featuredImageUrl,
+          width:1200,
+          height:800,
+          alt:post.featuredImageAlt
+        }
+      ]
+
     },
 
-    twitter: {
-      card: "summary_large_image",
-      title: article.headline,
-      description: article.dek,
-      images: [article.imageUrl],
-    },
+
+    twitter:{
+      card:"summary_large_image",
+      title:post.headline,
+      description:post.dek,
+      images:[post.featuredImageUrl]
+    }
+
   };
+
 }
-
 export default async function ArticlePage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
-  const { slug } = await params;
 
-  /**
-   * IMPORTANT:
-   * Article comes directly from Prisma.
-   * Only PUBLISHED posts are accessible publicly.
-   */
-  const post = await getPublishedArticle(slug);
+  params
 
-  if (!post) {
+}:{
+  params:Promise<{slug:string}>
+}){
+
+
+  const {slug}=await params;
+
+
+  const post:any = await getArticle(slug);
+
+
+  if(!post){
     notFound();
   }
 
+
   const article = mapPostToArticle(post);
 
-  const categoryLabel = post.category.name;
 
-  /**
-   * Get related published articles from the database.
-   */
+
   const relatedPosts = await prisma.post.findMany({
-    where: {
-      status: "PUBLISHED",
-      categoryId: post.categoryId,
-      id: {
-        not: post.id,
+
+    where:{
+
+      status:"PUBLISHED",
+
+      categoryId:post.categoryId,
+
+      id:{
+        not:post.id
+      }
+
+    },
+
+
+    select:{
+
+      id:true,
+      slug:true,
+      headline:true,
+      dek:true,
+
+      featuredImageUrl:true,
+      featuredImageAlt:true,
+
+      readingTimeMin:true,
+      views:true,
+
+      isBreaking:true,
+      isLive:true,
+
+      publishedAt:true,
+      updatedAt:true,
+
+
+      author:{
+        select:{
+          name:true,
+          image:true,
+          role:true
+        }
       },
-    },
-    include: {
-      author: true,
-      category: true,
-      tags: {
-        include: {
-          tag: true,
-        },
+
+
+      category:{
+        select:{
+          slug:true,
+          name:true
+        }
       },
+
+
+      tags:{
+        select:{
+          tag:{
+            select:{
+              name:true
+            }
+          }
+        }
+      }
+
     },
-    orderBy: {
-      publishedAt: "desc",
+
+
+    orderBy:{
+      publishedAt:"desc"
     },
-    take: 4,
+
+
+    take:4
+
   });
 
-  const related: Article[] = relatedPosts.map(mapPostToArticle);
 
-  /**
-   * Real database comments.
-   *
-   * The current user is used to determine:
-   * - whether the user has liked a comment
-   * - whether the user can delete a comment
-   */
-  const session = await getCurrentSession();
-  const currentUserId = session?.sub ?? null;
 
-  const databaseComments = await prisma.comment.findMany({
-    where: {
-      postId: post.id,
-    },
-    include: {
-      author: true,
-      likesByUsers: {
-        select: {
-          userId: true,
-        },
-      },
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
+  const related:Article[] =
+    relatedPosts.map(mapPostToArticle);
 
-  const comments: Comment[] = databaseComments.map((comment) => ({
-    id: comment.id,
-    articleId: comment.postId,
-    authorName: comment.author.name,
-    postedAt: comment.createdAt.toISOString(),
-    text: comment.text,
-    likes: comment.likes,
 
-    liked:
-      currentUserId !== null &&
-      comment.likesByUsers.some(
-        (like) => like.userId === currentUserId
-      ),
 
-    canDelete: currentUserId === comment.authorId,
 
-    status: "approved",
-  }));
 
   const articleSchema = {
-    "@context": "https://schema.org",
-    "@type": "NewsArticle",
+
+    "@context":"https://schema.org",
+
+    "@type":"NewsArticle",
 
     headline: article.headline,
+
     description: article.dek,
 
-    image: [article.imageUrl],
+    image:[article.imageUrl],
 
     datePublished: article.publishedAt,
+
     dateModified: article.updatedAt,
 
-    author: [
-      {
-        "@type": "Person",
-        name: article.author.name,
-      },
-    ],
-
-    publisher: {
-      "@type": "Organization",
-      name: "AZEEL NEWS",
-
-      logo: {
-        "@type": "ImageObject",
-        url: `${SITE_URL}/logo.png`,
-      },
+    author:{
+      "@type":"Person",
+      name:article.author.name
     },
 
-    mainEntityOfPage: {
-      "@type": "WebPage",
-      "@id": `${SITE_URL}/article/${article.slug}`,
+    publisher:{
+      "@type":"NewsMediaOrganization",
+      name:"AZEEL NEWS",
+      logo:{
+        "@type":"ImageObject",
+        url:`${SITE_URL}/logo.png`
+      }
     },
+
+    mainEntityOfPage:{
+      "@type":"WebPage",
+      "@id":`${SITE_URL}/article/${article.slug}`
+    }
+
   };
+
 
   const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
 
-    itemListElement: [
+    "@context":"https://schema.org",
+
+    "@type":"BreadcrumbList",
+
+    itemListElement:[
+
       {
-        "@type": "ListItem",
-        position: 1,
-        name: "Home",
-        item: `${SITE_URL}/`,
+        "@type":"ListItem",
+        position:1,
+        name:"Home",
+        item:SITE_URL
       },
 
       {
-        "@type": "ListItem",
-        position: 2,
-        name: categoryLabel,
-        item: `${SITE_URL}/category/${post.category.slug}`,
+        "@type":"ListItem",
+        position:2,
+        name:post.category.name,
+        item:`${SITE_URL}/category/${post.category.slug}`
       },
 
       {
-        "@type": "ListItem",
-        position: 3,
-        name: article.headline,
-        item: `${SITE_URL}/article/${article.slug}`,
-      },
-    ],
+        "@type":"ListItem",
+        position:3,
+        name:article.headline,
+        item:`${SITE_URL}/article/${article.slug}`
+      }
+
+    ]
+
   };
 
+
   return (
+
     <>
+
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(articleSchema),
+          __html: JSON.stringify(articleSchema)
         }}
       />
 
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(breadcrumbSchema),
+          __html: JSON.stringify(breadcrumbSchema)
         }}
       />
 
-      <TopBar />
 
-      <Header />
+      <TopBar/>
 
-      <main
-        id="main-content"
-        className="mx-auto max-w-[1400px] px-4 py-8"
-      >
-        <nav
-          aria-label="Breadcrumb"
-          className="mb-5 flex items-center gap-1.5 text-xs text-ink-300"
-        >
-          <Link
-            href="/"
-            className="hover:text-azeel"
-          >
+      <Header/>
+
+
+      <main className="mx-auto max-w-[1400px] px-4 py-8">
+
+
+        <nav className="mb-5 flex items-center gap-2 text-xs text-ink-300">
+
+
+          <Link href="/">
             Home
           </Link>
 
-          <ChevronRight size={12} />
 
-          <Link
-            href={`/category/${post.category.slug}`}
-            className="hover:text-azeel"
-          >
-            {categoryLabel}
+          <ChevronRight size={12}/>
+
+
+          <Link href={`/category/${post.category.slug}`}>
+            {post.category.name}
           </Link>
 
-          <ChevronRight size={12} />
 
-          <span
-            className="truncate text-ink-600"
-            aria-current="page"
-          >
-            {article.headline}
-          </span>
         </nav>
 
+
+
         <div className="grid gap-10 lg:grid-cols-[1fr_320px]">
+
+
           <article>
-            <span className="mb-3 inline-block rounded-sm bg-azeel px-2 py-1 font-mono text-[11px] font-semibold uppercase tracking-eyebrow text-white">
-              {categoryLabel}
+
+
+            <span className="mb-3 inline-block rounded-sm bg-azeel px-2 py-1 text-xs text-white">
+
+              {post.category.name}
+
             </span>
 
-            <h1 className="mb-3 font-display text-3xl font-bold leading-[1.1] text-ink-950 md:text-[2.75rem]">
+
+
+            <h1 className="mb-3 font-display text-3xl font-bold md:text-5xl">
+
               {article.headline}
+
             </h1>
 
-            <p className="mb-5 text-lg leading-relaxed text-ink-600">
+
+
+            <p className="mb-5 text-lg text-ink-600">
+
               {article.dek}
+
             </p>
 
-            <div className="mb-6 flex flex-wrap items-center justify-between gap-4 border-b border-hairline pb-6">
-              <AuthorCard author={article.author} />
+
+
+            <div className="mb-6 border-b pb-6">
+
+
+              <AuthorCard author={article.author}/>
+
 
               <ArticleMeta
-                authorName={`Published ${new Date(
-                  article.publishedAt
-                ).toLocaleDateString("en-IN", {
-                  day: "numeric",
-                  month: "short",
-                  year: "numeric",
-                })}`}
+
+                authorName={`Published ${new Date(article.publishedAt).toLocaleDateString("en-IN")}`}
+
                 publishedAt={article.updatedAt}
+
                 readingTimeMin={article.readingTimeMin}
+
               />
-            </div>
 
-            <div className="relative mb-8 aspect-[16/9] overflow-hidden bg-ink-100">
-              <Image
-                src={article.imageUrl}
-                alt={article.imageAlt}
-                fill
-                priority
-                sizes="(min-width: 1024px) 66vw, 100vw"
-                className="object-cover"
+
+            </div>
+              <div className="relative aspect-video mb-8">
+
+                <Image
+
+                  src={article.imageUrl}
+
+                  alt={article.imageAlt}
+
+                  fill
+
+                  priority
+
+                  sizes="(max-width:768px) 100vw, 900px"
+
+                  className="object-cover"
+
+                />
+
+              </div>
+
+
+
+              <ArticleInteractive article={article}/>
+
+
+
+              <div className="my-8">
+
+                <AdSlot size="inline"/>
+
+              </div>
+
+
+
+              <div className="mb-8">
+
+                <TagList tags={article.tags ?? []}/>
+
+                <GoogleNewsFollow/>
+
+              </div>
+
+
+
+              <CommentSection
+
+                articleId={article.id}
+
+                initialComments={[]}
+
               />
-            </div>
 
-            <ArticleInteractive article={article} />
 
-            <div className="my-8">
-              <AdSlot size="inline" />
-            </div>
+            </article>
 
-            <div className="mb-8 flex flex-col gap-4">
-              <TagList tags={article.tags ?? []} />
 
-              <GoogleNewsFollow />
-            </div>
 
-            <CommentSection
-              articleId={article.id}
-              initialComments={comments}
-            />
-          </article>
+            <aside className="flex flex-col gap-8">
 
-          <aside className="flex flex-col gap-8">
-            <AdSlot size="sidebar" />
 
-            <NewsletterInline />
-          </aside>
-        </div>
+              <AdSlot size="sidebar"/>
 
-        <RelatedArticles articles={related} />
-      </main>
 
-      <Footer />
+              <NewsletterInline/>
 
-      <CookieConsent />
+
+            </aside>
+
+
+          </div>
+
+
+
+          <RelatedArticles articles={related}/>
+
+
+        </main>
+
+
+
+        <Footer/>
+
+
+        <CookieConsent/>
+
+
     </>
+
   );
+
 }
