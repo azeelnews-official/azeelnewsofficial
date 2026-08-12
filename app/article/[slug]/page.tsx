@@ -64,9 +64,15 @@ function mapPostToArticle(post:any):Article{
       avatarUrl:post.author.image ?? "",
     },
 
-    publishedAt:(post.publishedAt ?? post.updatedAt).toISOString(),
+    publishedAt:
+      new Date(
+        post.publishedAt ?? post.updatedAt ?? new Date()
+      ).toISOString(),
 
-    updatedAt:post.updatedAt.toISOString(),
+    updatedAt:
+      new Date(
+        post.updatedAt ?? post.publishedAt ?? new Date()
+      ).toISOString(),
 
     readingTimeMin:post.readingTimeMin,
 
