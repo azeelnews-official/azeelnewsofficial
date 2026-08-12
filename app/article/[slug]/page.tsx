@@ -26,20 +26,22 @@ const SITE_URL = "https://www.azeelnews.in";
 
 export const revalidate = 60;
 
-function bodyToParagraphs(body:string):string[]{
+function bodyToParagraphs(body?: string): string[] {
+  if (!body) return [];
+
   return body
     .split(/\n\s*\n/)
-    .map((p)=>
+    .map((p) =>
       p
-      .replace(/^#{1,6}\s+/gm,"")
-      .replace(/^\s*[-*]\s+/gm,"")
-      .trim()
+        .replace(/^#{1,6}\s+/gm, "")
+        .replace(/^\s*[-*]\s+/gm, "")
+        .trim()
     )
     .filter(Boolean);
 }
 
-function createAuthorSlug(name:string){
-  return name
+function createAuthorSlug(name?: string){
+  return (name ?? "azeel-news")
     .toLowerCase()
     .trim()
     .replace(/[^a-z0-9]+/g,"-")
@@ -68,17 +70,19 @@ function mapPostToArticle(post:any):Article{
 
     readingTimeMin:post.readingTimeMin,
 
-    imageUrl:post.featuredImageUrl,
-    imageAlt:post.featuredImageAlt,
+    imageUrl:post.featuredImageUrl ?? "/logo.png",
+    imageAlt:post.featuredImageAlt ?? "Azeel News",
 
     isLive:post.isLive,
     isBreaking:post.isBreaking,
 
     views:post.views,
 
-    tags:post.tags.map((x:any)=>x.tag.name),
+    tags:(post.tags ?? [])
+      .map((x:any)=>x.tag?.name)
+      .filter(Boolean),
 
-    body:bodyToParagraphs(post.body),
+    body:bodyToParagraphs(post.body ?? ""),
   };
 }
 const getArticle = unstable_cache(
@@ -491,9 +495,9 @@ export default async function ArticlePage({
 
                 <Image
 
-                  src={article.imageUrl}
+                  src={article.imageUrl || "/logo.png"}
 
-                  alt={article.imageAlt}
+                  alt={article.imageAlt || "Azeel News"}
 
                   fill
 
