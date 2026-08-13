@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Search, Menu, X, Radio, Film, Image as ImageIcon, TrendingUp, Newspaper, ShieldCheck } from "lucide-react";
-import { categories, readerNotifications } from "@/lib/mock-data";
+import { categories, readerNotifications } from "@/lib/data/constants";
 import { SearchOverlay } from "./SearchOverlay";
 import { AccountMenu } from "./AccountMenu";
 import { NotificationsBell } from "@/components/shared/NotificationsBell";
