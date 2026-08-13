@@ -3,7 +3,7 @@ import { StatCard } from "@/components/admin/StatCard";
 import { TrafficChart } from "@/components/admin/TrafficChart";
 import { RecentPostsTable } from "@/components/admin/RecentPostsTable";
 import { QuickActions } from "@/components/admin/QuickActions";
-import { getAdminPosts, getAdminStats } from "@/lib/mock-data";
+import { getAdminPosts, getAdminStats } from "@/lib/data/posts";
 
 export default function AdminDashboardPage() {
   const stats = getAdminStats();
