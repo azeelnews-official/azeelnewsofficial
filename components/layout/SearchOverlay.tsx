@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Search, Mic, X, Clock, Flame } from "lucide-react";
-import { searchArticles, trendingSearches, getCategoryLabel } from "@/lib/data/constants";
+import { getCategoryLabel } from "@/lib/data/constants";
 
 const RECENT_KEY = "azeel-recent-searches";
 const MAX_RECENT = 5;
