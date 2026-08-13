@@ -315,13 +315,17 @@ category:true
 
 }
 
+
+
 export async function getAdminStats(){
 
 const [
 totalPosts,
 publishedPosts,
 draftPosts,
-totalViews
+totalViews,
+activeUsers,
+totalComments
 ] = await Promise.all([
 
 prisma.post.count(),
@@ -342,7 +346,11 @@ prisma.post.aggregate({
 _sum:{
 views:true
 }
-})
+}),
+
+prisma.user.count(),
+
+prisma.comment.count()
 
 ]);
 
@@ -355,8 +363,14 @@ publishedPosts,
 
 draftPosts,
 
-totalViews: totalViews._sum.views ?? 0
+totalViews:
+totalViews._sum.views ?? 0,
+
+activeUsers,
+
+totalComments
 
 };
 
 }
+
