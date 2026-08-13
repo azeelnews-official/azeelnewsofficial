@@ -325,7 +325,8 @@ publishedPosts,
 draftPosts,
 totalViews,
 activeUsers,
-totalComments
+totalComments,
+pendingComments
 ] = await Promise.all([
 
 prisma.post.count(),
@@ -350,7 +351,13 @@ views:true
 
 prisma.user.count(),
 
-prisma.comment.count()
+prisma.comment.count(),
+
+prisma.comment.count({
+where:{
+status:"PENDING"
+}
+})
 
 ]);
 
@@ -368,7 +375,9 @@ totalViews._sum.views ?? 0,
 
 activeUsers,
 
-totalComments
+totalComments,
+
+pendingComments
 
 };
 
