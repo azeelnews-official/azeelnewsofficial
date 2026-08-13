@@ -4,7 +4,7 @@ import { TopBar } from "@/components/layout/TopBar";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { CookieConsent } from "@/components/layout/CookieConsent";
-import { factChecks, type FactCheckVerdict } from "@/lib/mock-data";
+import { getFactChecks, type FactCheckVerdict } from "@/lib/data/fact-check";
 import { formatRelativeTime, cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
@@ -20,7 +20,7 @@ const VERDICT_STYLES: Record<FactCheckVerdict, { icon: typeof CheckCircle2; labe
   unverified: { icon: HelpCircle, label: "Unverified", className: "bg-ink-50 text-ink-600 border-hairline" },
 };
 
-export default function FactCheckPage() {
+export default async function FactCheckPage() {
   return (
     <>
       <TopBar />
@@ -35,8 +35,8 @@ export default function FactCheckPage() {
         </p>
 
         <div className="flex flex-col gap-5">
-          {factChecks.map((item) => {
-            const verdict = VERDICT_STYLES[item.verdict];
+          {(await getFactChecks()).map((item) => {
+            const verdict = VERDICT_STYLES[item.verdict as FactCheckVerdict];
             return (
               <article key={item.id} className="border border-hairline bg-surface p-5">
                 <div className="mb-3 flex items-center justify-between gap-3">
@@ -44,7 +44,7 @@ export default function FactCheckPage() {
                     <verdict.icon size={13} />
                     {verdict.label}
                   </span>
-                  <span className="font-mono text-xs text-ink-300">{formatRelativeTime(item.publishedAt)}</span>
+                  <span className="font-mono text-xs text-ink-300">{formatRelativeTime(item.publishedAt.toISOString())}</span>
                 </div>
                 <p className="mb-2 font-display text-lg font-semibold italic text-ink-900">{item.claim}</p>
                 <p className="text-sm leading-relaxed text-ink-600">{item.summary}</p>

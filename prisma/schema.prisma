@@ -435,3 +435,11 @@ model LiveSchedule {
   channelId String?
   createdAt DateTime  @default(now())
 }
+
+model FactCheck {
+  id          String   @id @default(cuid())
+  claim       String
+  summary     String
+  verdict     String
+  publishedAt DateTime @default(now())
+}
