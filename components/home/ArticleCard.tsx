@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Article } from "@/lib/types";
 import { ArticleMeta } from "./ArticleMeta";
-import { getCategoryLabel } from "@/lib/mock-data";
+import { getCategoryLabel } from "@/lib/data/constants";
 import { cn } from "@/lib/utils";
 import { useTranslatedText } from "@/lib/hooks/useTranslatedText";
 
