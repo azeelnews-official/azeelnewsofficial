@@ -6,7 +6,7 @@ import { TopBar } from "@/components/layout/TopBar";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { CookieConsent } from "@/components/layout/CookieConsent";
-import { getAllArticles } from "@/lib/mock-data";
+import { getPublishedArticles } from "@/lib/data/articles";
 
 export const metadata: Metadata = {
   title: "Videos",
@@ -14,8 +14,8 @@ export const metadata: Metadata = {
   alternates: { canonical: "/videos" },
 };
 
-export default function VideosPage() {
-  const articles = getAllArticles();
+export default async function VideosPage() {
+  const articles = await getPublishedArticles();
 
   return (
     <>
