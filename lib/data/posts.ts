@@ -294,13 +294,49 @@ featuredImageUrl:true
 
 
 
+
 export async function getAdminPosts(){
 
-return prisma.post.findMany({
+const posts = await prisma.post.findMany({
 
 orderBy:{
 createdAt:"desc"
 },
+
+include:{
+author:true,
+category:true
+}
+
+});
+
+
+return posts.map((post)=>({
+
+id:post.id,
+
+slug:post.slug,
+
+headline:post.headline,
+
+category:post.category.slug,
+
+author:post.author.name,
+
+status:post.status,
+
+views:post.views,
+
+createdAt:post.createdAt.toISOString(),
+
+publishedAt:post.publishedAt
+? post.publishedAt.toISOString()
+: null
+
+}));
+
+}
+,
 
 
 include:{
