@@ -2,9 +2,9 @@
 
 import { useRef, useState } from "react";
 import { Calendar, ImagePlus, Tag as TagIcon, X } from "lucide-react";
-import { categories } from "@/lib/mock-data";
+import { categories } from "@/lib/data/constants";
 import type { CategorySlug } from "@/lib/types";
-import type { PostStatus } from "@/lib/mock-data";
+import type { PostStatus } from "@/lib/data/constants";
 import { cn } from "@/lib/utils";
 
 export function PublishPanel({

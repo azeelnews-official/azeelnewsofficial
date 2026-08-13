@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { categories } from "@/lib/mock-data";
+import { categories } from "@/lib/data/constants";
 import { cn } from "@/lib/utils";
 import type { CategorySlug } from "@/lib/types";
 

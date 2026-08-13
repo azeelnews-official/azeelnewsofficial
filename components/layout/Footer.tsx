@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Facebook, Instagram, Youtube, Linkedin, Send, MessageCircle } from "lucide-react";
-import { categories } from "@/lib/mock-data";
+import { categories } from "@/lib/data/constants";
 import { FooterNewsletterForm } from "./FooterNewsletterForm";
 
 const COMPANY_LINKS = [
