@@ -314,3 +314,49 @@ category:true
 });
 
 }
+
+export async function getAdminStats(){
+
+const [
+totalPosts,
+publishedPosts,
+draftPosts,
+totalViews
+] = await Promise.all([
+
+prisma.post.count(),
+
+prisma.post.count({
+where:{
+status:"PUBLISHED"
+}
+}),
+
+prisma.post.count({
+where:{
+status:"DRAFT"
+}
+}),
+
+prisma.post.aggregate({
+_sum:{
+views:true
+}
+})
+
+]);
+
+
+return {
+
+totalPosts,
+
+publishedPosts,
+
+draftPosts,
+
+totalViews: totalViews._sum.views ?? 0
+
+};
+
+}
