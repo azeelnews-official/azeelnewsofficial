@@ -3,10 +3,10 @@
 import { useState } from "react";
 import Image from "next/image";
 import { PlayCircle, Radio, Clock } from "lucide-react";
-import { liveChannels, liveSchedule } from "@/lib/mock-data";
+
 import { cn } from "@/lib/utils";
 
-export function LiveTvPlayer() {
+export function LiveTvPlayer({ liveChannels, liveSchedule }: { liveChannels:any[]; liveSchedule:any[] }) {
   const [activeChannelId, setActiveChannelId] = useState(liveChannels[0]?.id ?? "");
   const activeChannel = liveChannels.find((c) => c.id === activeChannelId) ?? liveChannels[0];
 

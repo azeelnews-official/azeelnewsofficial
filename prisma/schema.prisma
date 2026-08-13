@@ -415,3 +415,23 @@ model AuditLog {
   @@index([userId])
   @@index([createdAt])
 }
+
+model LiveChannel {
+  id        String   @id @default(cuid())
+  name      String
+  streamUrl String
+  logoUrl   String?
+  active    Boolean  @default(true)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model LiveSchedule {
+  id        String    @id @default(cuid())
+  title     String
+  startTime DateTime
+  endTime   DateTime?
+  channelId String?
+  createdAt DateTime  @default(now())
+}
