@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Eye, Pencil } from "lucide-react";
-import type { AdminPost, PostStatus } from "@/lib/data/constants";
+import type { AdminPost, PostStatus } from "@/lib/types/admin";
 import { getCategoryLabel } from "@/lib/data/constants";
 import { formatRelativeTime, formatViews, cn } from "@/lib/utils";
 
