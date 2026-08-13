@@ -5,7 +5,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { CookieConsent } from "@/components/layout/CookieConsent";
 import { ArticleCard } from "@/components/home/ArticleCard";
-import { getAllArticles } from "@/lib/mock-data";
+import { getPublishedArticles } from "@/lib/data/articles";
 
 export const metadata: Metadata = {
   title: "Trending",
@@ -13,8 +13,8 @@ export const metadata: Metadata = {
   alternates: { canonical: "/trending" },
 };
 
-export default function TrendingPage() {
-  const articles = getAllArticles()
+export default async function TrendingPage() {
+  const articles = (await getPublishedArticles())
     .slice()
     .sort((a, b) => (b.views ?? 0) - (a.views ?? 0));
 
