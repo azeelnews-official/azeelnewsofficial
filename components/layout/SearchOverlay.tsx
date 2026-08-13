@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Search, Mic, X, Clock, Flame } from "lucide-react";
 import { getCategoryLabel } from "@/lib/data/constants";
+import { trendingSearches } from "@/lib/data/search";
 
 const RECENT_KEY = "azeel-recent-searches";
 const MAX_RECENT = 5;
@@ -31,7 +32,37 @@ export function SearchOverlay({ onClose }: { onClose: () => void }) {
     }
   }, []);
 
-  const suggestions = query.trim() ? searchArticles(query).slice(0, 5) : [];
+  type SearchResult = {
+  id:string;
+  slug:string;
+  headline:string;
+  featuredImageUrl:string;
+  category:string;
+};
+
+const [suggestions,setSuggestions] = useState<SearchResult[]>([]);
+
+useEffect(()=>{
+
+if(!query.trim()){
+setSuggestions([]);
+return;
+}
+
+const timer=setTimeout(async()=>{
+
+const res=await fetch(`/api/search?q=${encodeURIComponent(query)}`);
+
+const data=await res.json();
+
+setSuggestions(data);
+
+},300);
+
+
+return ()=>clearTimeout(timer);
+
+},[query]);
 
   function runSearch(term: string) {
     const trimmed = term.trim();
