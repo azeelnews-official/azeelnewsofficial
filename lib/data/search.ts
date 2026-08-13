@@ -72,7 +72,16 @@ headline:post.headline,
 
 dek:post.dek,
 
-category:post.category.slug,
+category:post.category.slug as
+  | "india"
+  | "world"
+  | "politics"
+  | "business"
+  | "technology"
+  | "sports"
+  | "entertainment"
+  | "health"
+  | "explainers",
 
 imageUrl:post.featuredImageUrl,
 
@@ -84,6 +93,10 @@ featuredImageAlt:post.featuredImageAlt,
 
 author:{
 name:post.author.name,
+slug:post.author.name
+  .toLowerCase()
+  .replace(/\s+/g,"-"),
+role:"JOURNALIST",
 avatarUrl:post.author.image ?? ""
 },
 
@@ -101,7 +114,7 @@ isLive:false,
 
 isBreaking:false
 
-}));));
+}));
 
 }
 
