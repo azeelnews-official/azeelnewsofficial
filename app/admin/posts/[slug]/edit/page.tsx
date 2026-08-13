@@ -27,28 +27,22 @@ function isCategorySlug(
   );
 }
 
-function getEditorStatus(
-  status:
-    | "DRAFT"
-    | "SCHEDULED"
-    | "PUBLISHED"
-    | "ARCHIVED"
-) {
-  switch (status) {
+function getEditorStatus(status:string){
+  switch(status){
     case "PUBLISHED":
-      return "published" as const;
+    case "published":
+      return "PUBLISHED";
 
     case "SCHEDULED":
-      return "scheduled" as const;
-
-    case "DRAFT":
-      return "draft" as const;
+    case "scheduled":
+      return "SCHEDULED";
 
     case "ARCHIVED":
-      return "draft" as const;
+    case "archived":
+      return "ARCHIVED";
 
     default:
-      return "draft" as const;
+      return "DRAFT";
   }
 }
 

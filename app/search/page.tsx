@@ -8,7 +8,7 @@ import { CookieConsent } from "@/components/layout/CookieConsent";
 import { AdSlot } from "@/components/home/AdSlot";
 import { ArticleCard } from "@/components/home/ArticleCard";
 import { SearchPageBar } from "@/components/search/SearchPageBar";
-import { searchArticles, trendingSearches } from "@/lib/mock-data";
+import { searchArticles, trendingSearches } from "@/lib/data/search";
 
 export const metadata: Metadata = {
   title: "Search",
@@ -22,7 +22,7 @@ export default async function SearchPage({
 }) {
   const { q } = await searchParams;
   const query = q?.trim() ?? "";
-  const results = query ? searchArticles(query) : [];
+  const results = query ? await searchArticles(query) : [];
 
   return (
     <>

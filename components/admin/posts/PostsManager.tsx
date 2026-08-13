@@ -1,5 +1,7 @@
 "use client";
 
+import type { PostStatus } from "@/lib/types/post";
+
 import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -17,7 +19,7 @@ import { formatRelativeTime, formatViews, cn } from "@/lib/utils";
 
 const PAGE_SIZE = 8;
 
-type PostStatus = "published" | "draft" | "scheduled";
+
 
 type CategorySlug =
   | "india"
@@ -71,12 +73,14 @@ const CATEGORIES: {
 ];
 
 const STATUS_STYLES: Record<PostStatus, string> = {
-  published:
+  PUBLISHED:
     "bg-green-50 text-green-700 border-green-200",
-  draft:
+  DRAFT:
     "bg-ink-50 text-ink-600 border-hairline",
-  scheduled:
+  SCHEDULED:
     "bg-azeel/10 text-azeel-dark border-azeel/20",
+  ARCHIVED:
+    "bg-red-50 text-red-700 border-red-200",
 };
 
 function getCategoryLabel(
@@ -509,13 +513,13 @@ export function PostsManager({
           <option value="all">
             All statuses
           </option>
-          <option value="published">
+          <option value="PUBLISHED">
             Published
           </option>
-          <option value="draft">
+          <option value="DRAFT">
             Draft
           </option>
-          <option value="scheduled">
+          <option value="SCHEDULED">
             Scheduled
           </option>
         </select>
@@ -563,7 +567,7 @@ export function PostsManager({
               label="Publish"
               onClick={() =>
                 void applyBulkStatus(
-                  "published"
+                  "PUBLISHED"
                 )
               }
             />
@@ -573,7 +577,7 @@ export function PostsManager({
               label="Unpublish"
               onClick={() =>
                 void applyBulkStatus(
-                  "draft"
+                  "DRAFT"
                 )
               }
             />
