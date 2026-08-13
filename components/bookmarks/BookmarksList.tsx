@@ -1,14 +1,29 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 import Link from "next/link";
 import { Bookmark } from "lucide-react";
 import { useBookmarks } from "@/lib/hooks/useBookmarks";
-import { getAllArticles } from "@/lib/mock-data";
+
 import { ArticleCard } from "@/components/home/ArticleCard";
 
 export function BookmarksList() {
   const { slugs, loaded } = useBookmarks();
-  const articles = getAllArticles().filter((a) => slugs.includes(a.slug));
+  const [articles, setArticles] = useState<any[]>([]);
+
+  useEffect(() => {
+
+    if (!loaded || slugs.length === 0) {
+      setArticles([]);
+      return;
+    }
+
+    fetch(`/api/bookmarks?slugs=${slugs.join(",")}`)
+      .then((res) => res.json())
+      .then((data) => setArticles(data));
+
+  }, [loaded, slugs]);
 
   if (!loaded) return null;
 
