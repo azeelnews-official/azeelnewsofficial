@@ -1,8 +1,6 @@
-export type PostStatus =
-  | "DRAFT"
-  | "SCHEDULED"
-  | "PUBLISHED"
-  | "ARCHIVED";
+import type { PostStatus } from "./post";
+
+
 
 
 export interface AdminPost {

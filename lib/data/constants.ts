@@ -54,3 +54,16 @@ return categories.find(
 )?.label ?? slug;
 
 }
+
+
+
+
+export const readerNotifications = [
+  {
+    id: "1",
+    title: "Welcome to Azeel News",
+    body: "Stay updated with latest news and stories.",
+    createdAt: new Date().toISOString(),
+    read: false
+  }
+];

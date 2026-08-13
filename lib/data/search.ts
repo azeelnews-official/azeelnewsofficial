@@ -31,10 +31,24 @@ select:{
 id:true,
 slug:true,
 headline:true,
+dek:true,
 featuredImageUrl:true,
+featuredImageAlt:true,
+publishedAt:true,
+updatedAt:true,
+views:true,
+
+author:{
+select:{
+name:true,
+image:true
+}
+},
+
 category:{
 select:{
-slug:true
+slug:true,
+name:true
 }
 }
 },
@@ -50,11 +64,44 @@ publishedAt:"desc"
 
 return posts.map((post)=>({
 
-...post,
+id:post.id,
 
-category:post.category.slug
+slug:post.slug,
 
-}));
+headline:post.headline,
+
+dek:post.dek,
+
+category:post.category.slug,
+
+imageUrl:post.featuredImageUrl,
+
+imageAlt:post.featuredImageAlt ?? post.headline,
+
+featuredImageUrl:post.featuredImageUrl,
+
+featuredImageAlt:post.featuredImageAlt,
+
+author:{
+name:post.author.name,
+avatarUrl:post.author.image ?? ""
+},
+
+publishedAt:post.publishedAt?.toISOString() ?? post.updatedAt.toISOString(),
+
+updatedAt:post.updatedAt.toISOString(),
+
+views:post.views,
+
+readingTimeMin:5,
+
+tags:[],
+
+isLive:false,
+
+isBreaking:false
+
+}));));
 
 }
 

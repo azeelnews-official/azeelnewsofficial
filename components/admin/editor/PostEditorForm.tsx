@@ -12,7 +12,7 @@ import {
   SeoPanel,
 } from "./EditorPanels";
 import type { CategorySlug } from "@/lib/types";
-import type { PostStatus } from "@/lib/mock-data";
+import type { PostStatus } from "@/lib/types/post";
 import { cn } from "@/lib/utils";
 
 export interface PostEditorInitialValues {
@@ -93,7 +93,7 @@ export function PostEditorForm({
 
   const [status, setStatus] =
     useState<PostStatus>(
-      initialValues.status ?? "draft"
+      initialValues.status ?? "DRAFT"
     );
 
   const [scheduledAt, setScheduledAt] =
@@ -139,7 +139,7 @@ export function PostEditorForm({
       }
 
       if (
-        requestedStatus === "scheduled" &&
+        requestedStatus === "SCHEDULED" &&
         !scheduledAt
       ) {
         throw new Error(
@@ -164,7 +164,7 @@ export function PostEditorForm({
           metaDescription.trim() || null,
         status: requestedStatus,
         scheduledAt:
-          requestedStatus === "scheduled"
+          requestedStatus === "SCHEDULED"
             ? scheduledAt
             : null,
         location:
@@ -223,16 +223,16 @@ export function PostEditorForm({
   }
 
   function handleSaveDraft() {
-    void savePost("draft");
+    void savePost("DRAFT");
   }
 
   function handlePublish() {
-    if (status === "scheduled") {
-      void savePost("scheduled");
+    if (status === "SCHEDULED") {
+      void savePost("SCHEDULED");
       return;
     }
 
-    void savePost("published");
+    void savePost("PUBLISHED");
   }
 
   const lastSavedLabel = lastSavedAt

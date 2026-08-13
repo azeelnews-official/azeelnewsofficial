@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { PostsManager } from "@/components/admin/posts/PostsManager";
 import { prisma } from "@/lib/prisma";
 import { getCurrentSession } from "@/lib/auth/session";
-import type { PostStatus } from "@/lib/mock-data";
+import type { PostStatus } from "@/lib/types/post";
 
 export const metadata = {
   title: "Posts",
@@ -87,13 +87,7 @@ export default async function AdminPostsPage() {
       ? post.body.split(/\n{2,}/)
       : [],
 
-    status: (
-      post.status === "PUBLISHED"
-        ? "published"
-        : post.status === "SCHEDULED"
-          ? "scheduled"
-          : "draft"
-    ) as PostStatus,
+    status: post.status as PostStatus,
   }));
 
   return (

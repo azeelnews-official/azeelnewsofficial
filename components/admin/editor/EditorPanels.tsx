@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import { Calendar, ImagePlus, Tag as TagIcon, X } from "lucide-react";
 import { categories } from "@/lib/data/constants";
 import type { CategorySlug } from "@/lib/types";
-import type { PostStatus } from "@/lib/data/constants";
+import type { PostStatus } from "@/lib/types/post";
 import { cn } from "@/lib/utils";
 
 export function PublishPanel({
@@ -39,12 +39,12 @@ export function PublishPanel({
         onChange={(e) => onStatusChange(e.target.value as PostStatus)}
         className="mb-3 w-full rounded-md border border-hairline px-2.5 py-2 text-sm text-ink-900 outline-none focus:border-azeel"
       >
-        <option value="draft">Draft</option>
-        <option value="published">Published</option>
-        <option value="scheduled">Scheduled</option>
+        <option value="DRAFT">Draft</option>
+        <option value="PUBLISHED">Published</option>
+        <option value="SCHEDULED">Scheduled</option>
       </select>
 
-      {status === "scheduled" && (
+      {status === "SCHEDULED" && (
         <div className="mb-3">
           <label htmlFor="post-schedule" className="mb-1 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-ink-300">
             <Calendar size={12} /> Publish at
@@ -76,7 +76,7 @@ export function PublishPanel({
           onClick={onPublish}
           className="flex-1 rounded-md bg-azeel px-3 py-2 text-sm font-semibold text-white hover:bg-azeel-dark"
         >
-          {status === "scheduled" ? "Schedule" : "Publish"}
+          {status === "SCHEDULED" ? "Schedule" : "Publish"}
         </button>
       </div>
     </div>
