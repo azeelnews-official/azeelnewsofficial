@@ -5,9 +5,10 @@ import { getCategoryLabel } from "@/lib/data/constants";
 import { formatRelativeTime, formatViews, cn } from "@/lib/utils";
 
 const STATUS_STYLES: Record<PostStatus, string> = {
-  published: "bg-green-50 text-green-700 border-green-200",
-  draft: "bg-ink-50 text-ink-600 border-hairline",
-  scheduled: "bg-azeel/10 text-azeel-dark border-azeel/20",
+  PUBLISHED: "bg-green-50 text-green-700 border-green-200",
+  DRAFT: "bg-ink-50 text-ink-600 border-hairline",
+  SCHEDULED: "bg-azeel/10 text-azeel-dark border-azeel/20",
+  ARCHIVED: "bg-red-50 text-red-700 border-red-200",
 };
 
 export function RecentPostsTable({ posts }: { posts: AdminPost[] }) {

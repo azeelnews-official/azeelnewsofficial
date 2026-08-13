@@ -48,6 +48,12 @@ enum Locale {
   HI
 }
 
+enum CommentStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
 // ---------- Auth ----------
 
 model User {
@@ -249,6 +255,8 @@ model PostTag {
 
 model Comment {
   id String @id @default(cuid())
+
+  status CommentStatus @default(PENDING)
 
   text String @db.Text
 

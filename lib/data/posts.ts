@@ -295,6 +295,7 @@ featuredImageUrl:true
 
 
 
+
 export async function getAdminPosts(){
 
 const posts = await prisma.post.findMany({
@@ -329,6 +330,8 @@ views:post.views,
 
 createdAt:post.createdAt.toISOString(),
 
+updatedAt:post.updatedAt.toISOString(),
+
 publishedAt:post.publishedAt
 ? post.publishedAt.toISOString()
 : null
@@ -336,21 +339,6 @@ publishedAt:post.publishedAt
 }));
 
 }
-,
-
-
-include:{
-
-author:true,
-
-category:true
-
-}
-
-});
-
-}
-
 
 
 export async function getAdminStats(){
