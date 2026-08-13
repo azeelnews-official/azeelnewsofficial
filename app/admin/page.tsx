@@ -5,9 +5,9 @@ import { RecentPostsTable } from "@/components/admin/RecentPostsTable";
 import { QuickActions } from "@/components/admin/QuickActions";
 import { getAdminPosts, getAdminStats } from "@/lib/data/posts";
 
-export default function AdminDashboardPage() {
-  const stats = getAdminStats();
-  const posts = getAdminPosts().slice(0, 6);
+export default async function AdminDashboardPage() {
+  const stats = await getAdminStats();
+  const posts = (await getAdminPosts()).slice(0, 6);
 
   return (
     <div>
