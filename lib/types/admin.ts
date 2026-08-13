@@ -21,6 +21,6 @@ export interface AdminPost {
 
   views:number;
 
-  createdAt:string;
+  createdAt?:string;
 
 }
