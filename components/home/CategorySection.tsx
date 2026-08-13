@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import type { Article, CategorySlug } from "@/lib/types";
 import { ArticleCard } from "./ArticleCard";
-import { getCategoryLabel } from "@/lib/mock-data";
+import { getCategoryLabel } from "@/lib/data/constants";
 
 export function CategorySection({
   categorySlug,

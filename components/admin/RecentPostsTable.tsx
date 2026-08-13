@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Eye, Pencil } from "lucide-react";
-import type { AdminPost, PostStatus } from "@/lib/mock-data";
-import { getCategoryLabel } from "@/lib/mock-data";
+import type { AdminPost, PostStatus } from "@/lib/data/constants";
+import { getCategoryLabel } from "@/lib/data/constants";
 import { formatRelativeTime, formatViews, cn } from "@/lib/utils";
 
 const STATUS_STYLES: Record<PostStatus, string> = {
