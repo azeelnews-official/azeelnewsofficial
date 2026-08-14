@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 
-export async function getMedia() {
-  return prisma.media.findMany({
+export async function getWidgets() {
+  return prisma.widget.findMany({
     orderBy: {
       createdAt: "desc",
     },

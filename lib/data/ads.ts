@@ -1,8 +1,7 @@
-
 import { prisma } from "@/lib/prisma";
 
 export async function getAdCampaigns() {
-  return prisma.advertisement.findMany({
+  return prisma.adCampaign.findMany({
     orderBy: {
       createdAt: "desc",
     },
