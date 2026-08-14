@@ -3,20 +3,20 @@
 import { useMemo, useState } from "react";
 import Image from "next/image";
 import { Search, Ban, CheckCircle2 } from "lucide-react";
-import type { AdminUser, AdminRole } from "@/lib/mock-data";
+import type { Role } from "@prisma/client";
 import { cn } from "@/lib/utils";
 
-const ROLE_STYLES: Record<AdminRole, string> = {
+const ROLE_STYLES: Record<Role, string> = {
   reader: "bg-ink-50 text-ink-600 border-hairline",
   journalist: "bg-azeel/10 text-azeel-dark border-azeel/20",
   editor: "bg-press/10 text-press-dark border-press/20",
   admin: "bg-ink-950 text-white border-ink-950",
 };
 
-export function UsersManager({ initialUsers }: { initialUsers: AdminUser[] }) {
+export function UsersManager({ initialUsers }: { initialUsers: User[] }) {
   const [users, setUsers] = useState(initialUsers);
   const [query, setQuery] = useState("");
-  const [roleFilter, setRoleFilter] = useState<AdminRole | "all">("all");
+  const [roleFilter, setRoleFilter] = useState<Role | "all">("all");
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -27,7 +27,7 @@ export function UsersManager({ initialUsers }: { initialUsers: AdminUser[] }) {
     });
   }, [users, query, roleFilter]);
 
-  function changeRole(id: string, role: AdminRole) {
+  function changeRole(id: string, role: Role) {
     setUsers((prev) => prev.map((u) => (u.id === id ? { ...u, role } : u)));
   }
 
@@ -59,7 +59,7 @@ export function UsersManager({ initialUsers }: { initialUsers: AdminUser[] }) {
         </div>
         <select
           value={roleFilter}
-          onChange={(e) => setRoleFilter(e.target.value as AdminRole | "all")}
+          onChange={(e) => setRoleFilter(e.target.value as Role | "all")}
           className="rounded-md border border-hairline px-2.5 py-1.5 text-sm text-ink-800 outline-none focus:border-azeel"
         >
           <option value="all">All roles</option>
@@ -99,7 +99,7 @@ export function UsersManager({ initialUsers }: { initialUsers: AdminUser[] }) {
                 <td className="px-3 py-3">
                   <select
                     value={u.role}
-                    onChange={(e) => changeRole(u.id, e.target.value as AdminRole)}
+                    onChange={(e) => changeRole(u.id, e.target.value as Role)}
                     className={cn(
                       "rounded-full border px-2.5 py-1 text-xs font-semibold capitalize outline-none",
                       ROLE_STYLES[u.role]
