@@ -16,8 +16,8 @@ export async function getTagsWithCounts() {
 
   return tags.map((tag) => ({
     id: tag.id,
-    label: tag.name,
+    name: tag.name,
     slug: tag.slug,
-    usageCount: tag._count.posts,
+    postCount: tag._count.posts,
   }));
 }
