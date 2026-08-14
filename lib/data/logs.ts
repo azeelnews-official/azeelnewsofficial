@@ -13,11 +13,10 @@ export async function getAuditLogs() {
 
   return logs.map((log) => ({
     id: log.id,
+    actor: log.user?.name || "System",
+    entity: `${log.entityType}:${log.entityId}`,
     action: log.action,
-    entityType: log.entityType,
-    entityId: log.entityId,
-    metadata: log.metadata,
     createdAt: log.createdAt.toISOString(),
-    userName: log.user?.name || "System",
+    metadata: log.metadata,
   }));
 }
