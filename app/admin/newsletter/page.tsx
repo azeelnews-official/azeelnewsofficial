@@ -7,11 +7,17 @@ export default async function AdminNewsletterPage() {
 
   const { subscribers } = await getNewsletterData();
 
+  const formattedSubscribers = subscribers.map((sub) => ({
+    id: sub.id,
+    email: sub.email,
+    status: (sub.active ? "active" : "unsubscribed") as "active" | "unsubscribed",
+    subscribedAt: sub.subscribedAt.toISOString(),
+  }));
+
   return (
     <NewsletterManager
-      subscribers={subscribers}
+      subscribers={formattedSubscribers}
       campaigns={[]}
     />
   );
-
 }
