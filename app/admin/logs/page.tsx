@@ -4,5 +4,5 @@ import { getAuditLogs } from "@/lib/data/logs";
 export const metadata = { title: "Logs" };
 
 export default async function AdminLogsPage() {
-  return <LogsViewer initialEntries={auditLogEntries} />;
+  return <LogsViewer initialEntries={await getAuditLogs()} />;
 }
