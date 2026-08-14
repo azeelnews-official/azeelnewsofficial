@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Plus, Trash2, ArrowUp, ArrowDown } from "lucide-react";
-import type { AdminMenu, MenuItem } from "@/lib/mock-data";
+import type { AdminMenu, AdminMenuItem as MenuItem } from "@/lib/data/menus";
 
 export function MenusManager({ initialMenus }: { initialMenus: AdminMenu[] }) {
   const [menus, setMenus] = useState(initialMenus);
@@ -19,7 +19,13 @@ export function MenusManager({ initialMenus }: { initialMenus: AdminMenu[] }) {
   function addItem(e: React.FormEvent) {
     e.preventDefault();
     if (!activeMenu || !label.trim() || !url.trim()) return;
-    const newItem: MenuItem = { id: `item-${crypto.randomUUID()}`, label: label.trim(), url: url.trim() };
+    const newItem: MenuItem = {
+      id: `item-${crypto.randomUUID()}`,
+      label: label.trim(),
+      url: url.trim(),
+      order: activeMenu.items.length,
+      active: true,
+    };
     updateItems(activeMenu.id, [...activeMenu.items, newItem]);
     setLabel("");
     setUrl("");

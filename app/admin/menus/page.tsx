@@ -1,9 +1,21 @@
-import { getMenus } from "@/lib/data/menus";
 import { MenusManager } from "@/components/admin/menus/MenusManager";
-import { adminMenus } from "@/lib/mock-data";
+import { getAdminMenus } from "@/lib/data/menus";
 
-export const metadata = { title: "Menus" };
 
-export default async function AdminMenusPage() {
-  return <MenusManager initialMenus={adminMenus} />;
+export const metadata = {
+title:"Menus"
+};
+
+
+export default async function AdminMenusPage(){
+
+const menus = await getAdminMenus();
+
+
+return (
+
+<MenusManager initialMenus={menus}/>
+
+)
+
 }
