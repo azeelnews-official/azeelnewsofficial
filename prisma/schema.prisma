@@ -475,3 +475,33 @@ model Epaper {
   @@index([published])
 }
 
+
+
+model Menu {
+  id          String     @id @default(cuid())
+  name        String
+  location    String?
+  items       MenuItem[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@index([location])
+}
+
+
+model MenuItem {
+  id        String   @id @default(cuid())
+  menuId    String
+
+  title     String
+  url       String
+  order     Int      @default(0)
+  active    Boolean  @default(true)
+
+  menu      Menu     @relation(fields:[menuId], references:[id], onDelete:Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([menuId])
+}
