@@ -3,7 +3,15 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { Search, CheckCircle2, ShieldAlert, Trash2 } from "lucide-react";
-import type { AdminComment } from "@/lib/mock-data";
+type AdminComment = {
+  id: string;
+  text: string;
+  authorName: string;
+  status: "approved" | "pending" | "spam";
+  postedAt: string;
+  articleSlug: string;
+  articleHeadline: string;
+};
 import { formatRelativeTime, cn } from "@/lib/utils";
 
 type StatusFilter = AdminComment["status"] | "all";

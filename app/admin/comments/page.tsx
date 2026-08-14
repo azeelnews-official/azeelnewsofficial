@@ -1,8 +1,10 @@
 import { CommentsManager } from "@/components/admin/comments/CommentsManager";
-import { getAllComments } from "@/lib/mock-data";
+import { getAllComments } from "@/lib/data/comments";
 
 export const metadata = { title: "Comments" };
 
-export default function AdminCommentsPage() {
-  return <CommentsManager initialComments={getAllComments()} />;
+export default async function AdminCommentsPage() {
+  const comments = await getAllComments();
+
+  return <CommentsManager initialComments={comments as any} />;
 }
