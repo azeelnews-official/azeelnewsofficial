@@ -1,8 +1,8 @@
 import { RedirectsManager } from "@/components/admin/redirects/RedirectsManager";
-import { adminRedirects } from "@/lib/mock-data";
+import { getRedirects } from "@/lib/data/redirects";
 
 export const metadata = { title: "Redirects" };
 
-export default function AdminRedirectsPage() {
-  return <RedirectsManager initialRedirects={adminRedirects} />;
+export default async function AdminRedirectsPage() {
+  return <RedirectsManager initialRedirects={await getRedirects()} />;
 }
