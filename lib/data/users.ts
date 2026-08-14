@@ -1,10 +1,18 @@
 
 import { prisma } from "@/lib/prisma";
 
-export async function getUsers(){
-return prisma.user.findMany({
-orderBy:{
-createdAt:"desc"
-}
-});
+export async function getAdminUsers() {
+  const users = await prisma.user.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  return users.map((user) => ({
+    id: user.id,
+    name: user.name || "Unknown",
+    email: user.email,
+    role: user.role,
+    createdAt: user.createdAt.toISOString(),
+  }));
 }
