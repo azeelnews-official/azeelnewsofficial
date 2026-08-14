@@ -1,8 +1,8 @@
 import { TagsManager } from "@/components/admin/tags/TagsManager";
-import { getTagsWithCounts } from "@/lib/mock-data";
+import { getTagsWithCounts } from "@/lib/data/tags";
 
 export const metadata = { title: "Tags" };
 
-export default function AdminTagsPage() {
-  return <TagsManager initialTags={getTagsWithCounts()} />;
+export default async function AdminTagsPage() {
+  return <TagsManager initialTags={await getTagsWithCounts()} />;
 }
