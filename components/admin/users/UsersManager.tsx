@@ -7,10 +7,10 @@ import type { Role } from "@prisma/client";
 import { cn } from "@/lib/utils";
 
 const ROLE_STYLES: Record<Role, string> = {
-  reader: "bg-ink-50 text-ink-600 border-hairline",
-  journalist: "bg-azeel/10 text-azeel-dark border-azeel/20",
-  editor: "bg-press/10 text-press-dark border-press/20",
-  admin: "bg-ink-950 text-white border-ink-950",
+  READER: "bg-ink-50 text-ink-600 border-hairline",
+  JOURNALIST: "bg-azeel/10 text-azeel-dark border-azeel/20",
+  EDITOR: "bg-press/10 text-press-dark border-press/20",
+  ADMIN: "bg-ink-950 text-white border-ink-950",
 };
 
 export function UsersManager({ initialUsers }: { initialUsers: User[] }) {
