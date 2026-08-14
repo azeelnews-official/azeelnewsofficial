@@ -16,8 +16,9 @@ export async function getCategoriesWithCounts() {
 
   return categories.map((category) => ({
     id: category.id,
-    name: category.name,
+    label: category.name,
+    labelHi: category.nameHi,
     slug: category.slug,
-    count: category._count.posts,
+    postCount: category._count.posts,
   }));
 }
