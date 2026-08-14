@@ -1,8 +1,8 @@
 import { CategoriesManager } from "@/components/admin/categories/CategoriesManager";
-import { getCategoriesWithCounts } from "@/lib/mock-data";
+import { getCategoriesWithCounts } from "@/lib/data/categories";
 
 export const metadata = { title: "Categories" };
 
-export default function AdminCategoriesPage() {
-  return <CategoriesManager initialCategories={getCategoriesWithCounts()} />;
+export default async function AdminCategoriesPage() {
+  return <CategoriesManager initialCategories={await getCategoriesWithCounts()} />;
 }
