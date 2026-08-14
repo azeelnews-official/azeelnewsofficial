@@ -1,8 +1,18 @@
 import { RedirectsManager } from "@/components/admin/redirects/RedirectsManager";
-import { getRedirects } from "@/lib/data/redirects";
+import { getAdminRedirects } from "@/lib/data/redirects";
 
-export const metadata = { title: "Redirects" };
+export const metadata={
+ title:"Redirects"
+};
 
-export default async function AdminRedirectsPage() {
-  return <RedirectsManager initialRedirects={await getRedirects()} />;
+export default async function AdminRedirectsPage(){
+
+ const redirects = await getAdminRedirects();
+
+ return (
+  <RedirectsManager
+   redirects={redirects}
+  />
+ );
+
 }
