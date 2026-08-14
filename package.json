@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@google-cloud/translate": "^10.0.1",
+    "@next/bundle-analyzer": "^16.3.1",
     "@prisma/client": "^6.19.3",
     "@upstash/ratelimit": "^2.0.8",
     "@upstash/redis": "^1.38.2",
@@ -32,6 +33,7 @@
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "resend": "6.18.1",
+    "sharp": "^0.35.3",
     "tailwind-merge": "2.6.0"
   },
   "devDependencies": {
