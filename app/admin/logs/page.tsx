@@ -1,8 +1,8 @@
 import { LogsViewer } from "@/components/admin/logs/LogsViewer";
-import { auditLogEntries } from "@/lib/mock-data";
+import { getAuditLogs } from "@/lib/data/logs";
 
 export const metadata = { title: "Logs" };
 
-export default function AdminLogsPage() {
+export default async function AdminLogsPage() {
   return <LogsViewer initialEntries={auditLogEntries} />;
 }
