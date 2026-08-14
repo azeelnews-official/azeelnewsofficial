@@ -11,6 +11,6 @@ export async function getRedirects() {
     id: redirect.id,
     fromPath: redirect.fromPath,
     toPath: redirect.toPath,
-    statusCode: redirect.statusCode,
+    statusCode: redirect.statusCode as 301 | 302 | 307,
   }));
 }
