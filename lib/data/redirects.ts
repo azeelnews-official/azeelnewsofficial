@@ -1,16 +1,9 @@
 import { prisma } from "@/lib/prisma";
 
-export async function getRedirects() {
-  const redirects = await prisma.redirect.findMany({
-    orderBy: {
-      id: "desc",
-    },
+export async function getAdminRedirects(){
+  return prisma.redirect.findMany({
+    orderBy:{
+      id:"desc"
+    }
   });
-
-  return redirects.map((redirect) => ({
-    id: redirect.id,
-    fromPath: redirect.fromPath,
-    toPath: redirect.toPath,
-    statusCode: redirect.statusCode as 301 | 302 | 307,
-  }));
 }

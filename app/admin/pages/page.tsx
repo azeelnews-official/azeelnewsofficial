@@ -1,8 +1,24 @@
 import { PagesManager } from "@/components/admin/pages/PagesManager";
-import { adminPages } from "@/lib/mock-data";
+import { getAdminPages } from "@/lib/data/pages";
 
-export const metadata = { title: "Pages" };
+export const metadata = {
+ title:"Pages"
+};
 
-export default async function AdminPagesPage() {
-  return <PagesManager initialPages={adminPages} />;
+export default async function AdminPagesPage(){
+
+ const pages = await getAdminPages();
+
+ return (
+  <PagesManager
+   pages={pages.map((page)=>({
+    id:page.id,
+    slug:page.slug,
+    title:page.title,
+    content:page.content,
+    updatedAt:page.updatedAt.toISOString()
+   }))}
+  />
+ );
+
 }
