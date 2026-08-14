@@ -1,10 +1,12 @@
 "use client";
 
+import type { AdminUserRow } from "@/lib/data/users";
 import { useMemo, useState } from "react";
 import Image from "next/image";
 import { Search, Ban, CheckCircle2 } from "lucide-react";
 import type { Role } from "@prisma/client";
 import { cn } from "@/lib/utils";
+
 
 const ROLE_STYLES: Record<Role, string> = {
   READER: "bg-ink-50 text-ink-600 border-hairline",
@@ -13,10 +15,10 @@ const ROLE_STYLES: Record<Role, string> = {
   ADMIN: "bg-ink-950 text-white border-ink-950",
 };
 
-export function UsersManager({ initialUsers }: { initialUsers: User[] }) {
+export function UsersManager({ initialUsers }: { initialUsers: AdminUserRow[] }) {
   const [users, setUsers] = useState(initialUsers);
   const [query, setQuery] = useState("");
-  const [roleFilter, setRoleFilter] = useState<Role | "all">("all");
+  const [roleFilter, setRoleFilter] = useState<AdminUserRow["role"] | "all">("all");
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
