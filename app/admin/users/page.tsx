@@ -1,3 +1,5 @@
+import { prisma } from "@/lib/prisma";
+
 import { UsersManager } from "@/components/admin/users/UsersManager";
 import { getAdminUsers } from "@/lib/data/users";
 
