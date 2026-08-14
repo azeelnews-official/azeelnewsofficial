@@ -3,6 +3,6 @@ import { adminPages } from "@/lib/mock-data";
 
 export const metadata = { title: "Pages" };
 
-export default function AdminPagesPage() {
+export default async function AdminPagesPage() {
   return <PagesManager initialPages={adminPages} />;
 }
