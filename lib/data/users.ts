@@ -13,6 +13,8 @@ export async function getAdminUsers() {
     name: user.name || "Unknown",
     email: user.email,
     role: user.role,
-    createdAt: user.createdAt.toISOString(),
+    avatarUrl: user.image || "",
+    joinedAt: user.createdAt.toISOString(),
+    status: user.emailVerified ? "ACTIVE" : "PENDING",
   }));
 }
