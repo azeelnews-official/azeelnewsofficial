@@ -15,6 +15,6 @@ export async function getAdminUsers() {
     role: user.role.toLowerCase() as "admin" | "editor" | "journalist" | "reader",
     avatarUrl: user.image || "",
     joinedAt: user.createdAt.toISOString(),
-    status: user.emailVerified ? "ACTIVE" : "PENDING",
+    status: user.emailVerified ? "active" : "suspended" as "active" | "suspended",
   }));
 }
