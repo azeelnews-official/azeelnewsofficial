@@ -1,8 +1,8 @@
 import { UsersManager } from "@/components/admin/users/UsersManager";
-import { adminUsers } from "@/lib/mock-data";
+import { getAdminUsers } from "@/lib/data/users";
 
 export const metadata = { title: "Users" };
 
-export default function AdminUsersPage() {
-  return <UsersManager initialUsers={adminUsers} />;
+export default async function AdminUsersPage() {
+  return <UsersManager initialUsers={await getAdminUsers()} />;
 }
