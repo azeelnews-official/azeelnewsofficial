@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { DatabaseBackup, Download, RotateCcw, Trash2, Loader2 } from "lucide-react";
-import type { AdminBackup } from "@/lib/mock-data";
+import type { AdminBackup } from "@/lib/types/admin";
 import { formatRelativeTime } from "@/lib/utils";
 
 export function BackupManager({ initialBackups }: { initialBackups: AdminBackup[] }) {

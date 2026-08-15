@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Plus, Trash2, ArrowRight } from "lucide-react";
-import type { AdminRedirect } from "@/lib/mock-data";
+import type { AdminRedirect } from "@/lib/types/admin";
 
 export function RedirectsManager({ initialRedirects }: { initialRedirects: AdminRedirect[] }) {
   const [redirects, setRedirects] = useState(initialRedirects);

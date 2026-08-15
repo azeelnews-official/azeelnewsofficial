@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import Image from "next/image";
 import { Search, Upload, Copy, Check, Trash2, Film } from "lucide-react";
-import type { AdminMediaItem } from "@/lib/mock-data";
+import type { AdminMediaItem } from "@/lib/types/admin";
 
 export function MediaManager({ initialItems }: { initialItems: AdminMediaItem[] }) {
   const [items, setItems] = useState(initialItems);

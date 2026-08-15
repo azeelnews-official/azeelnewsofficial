@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Plus, Trash2, Save } from "lucide-react";
-import type { AdminPage } from "@/lib/mock-data";
+import type { AdminPage } from "@/lib/types/admin";
 
 export function PagesManager({ initialPages }: { initialPages: AdminPage[] }) {
   const [pages, setPages] = useState(initialPages);

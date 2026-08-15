@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import Image from "next/image";
 import { Search, Pause, Play, Trash2 } from "lucide-react";
-import type { AdCampaign, AdCampaignStatus, AdPlacement } from "@/lib/mock-data";
+import type { AdCampaign, AdCampaignStatus, AdPlacement } from "@/lib/types/admin";
 import { cn } from "@/lib/utils";
 
 const STATUS_STYLES: Record<AdCampaignStatus, string> = {
