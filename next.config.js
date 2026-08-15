@@ -8,7 +8,7 @@ const nextConfig = {
 
   compress: true,
 
-  output: "standalone",
+  
 
 
   images: {
