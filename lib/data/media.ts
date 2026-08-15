@@ -1,9 +1,11 @@
 import { prisma } from "@/lib/prisma";
 
-export async function getMedia() {
+export async function getAdminMedia(){
+
   return prisma.media.findMany({
-    orderBy: {
-      createdAt: "desc",
-    },
+    orderBy:{
+      createdAt:"desc"
+    }
   });
+
 }
