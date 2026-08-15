@@ -84,19 +84,40 @@ themeColor:"#0B1220"
 
 
 
-const organizationSchema={
-
+const organizationSchema = [
+{
 "@context":"https://schema.org",
-
 "@type":"NewsMediaOrganization",
-
-name:SITE_NAME,
-
-url:SITE_URL,
-
-logo:`${SITE_URL}/logo.png`
-
-};
+"name":SITE_NAME,
+"url":SITE_URL,
+"logo":{
+"@type":"ImageObject",
+"url":`${SITE_URL}/logo.png`
+},
+"description":SITE_DESCRIPTION,
+"sameAs":[
+"https://www.instagram.com/azeelnews",
+"https://www.linkedin.com/company/azeelnews",
+"https://www.youtube.com/@azeelnews",
+"https://x.com/azeelnews"
+]
+},
+{
+"@context":"https://schema.org",
+"@type":"WebSite",
+"name":SITE_NAME,
+"url":SITE_URL,
+"description":SITE_DESCRIPTION,
+"potentialAction":{
+"@type":"SearchAction",
+"target":{
+"@type":"EntryPoint",
+"urlTemplate":`${SITE_URL}/search?q={search_term_string}`
+},
+"query-input":"required name=search_term_string"
+}
+}
+]
 
 
 
