@@ -3,6 +3,7 @@ import "./globals.css";
 
 import { AuthProvider } from "@/components/auth/AuthProvider";
 import { LanguageProvider } from "@/components/i18n/LanguageProvider";
+import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
 
 
 const SITE_URL = "https://www.azeelnews.in";
@@ -165,6 +166,8 @@ Skip to main content
 </a>
 
 
+
+<GoogleAnalytics />
 
 <AuthProvider>
 
