@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Search, X } from "lucide-react";
-import type { TagUsage } from "@/lib/mock-data";
+import type { TagUsage } from "@/lib/types/admin";
 
 export function TagsManager({ initialTags }: { initialTags: TagUsage[] }) {
   const [tags, setTags] = useState(initialTags);

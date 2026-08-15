@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { Search, ScrollText } from "lucide-react";
-import type { AuditLogEntry } from "@/lib/mock-data";
+import type { AuditLogEntry } from "@/lib/types/admin";
 import { formatRelativeTime } from "@/lib/utils";
 
 const ACTION_CATEGORY_STYLES: Record<string, string> = {

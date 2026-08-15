@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Users, Send, TrendingUp } from "lucide-react";
-import type { NewsletterSubscriber, NewsletterCampaign } from "@/lib/mock-data";
+import type { NewsletterSubscriber, NewsletterCampaign } from "@/lib/types/admin";
 import { StatCard } from "@/components/admin/StatCard";
 
 export function NewsletterManager({

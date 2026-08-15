@@ -1,8 +1,13 @@
 import { BackupManager } from "@/components/admin/backup/BackupManager";
-import { adminBackups } from "@/lib/mock-data";
+import type { AdminBackup } from "@/lib/types/admin";
 
-export const metadata = { title: "Backup" };
+export default function AdminBackupPage(){
 
-export default function AdminBackupPage() {
-  return <BackupManager initialBackups={adminBackups} />;
+  const formattedBackups: AdminBackup[] = [];
+
+  return (
+    <BackupManager
+      initialBackups={formattedBackups}
+    />
+  );
 }
