@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/react";
 
 import { AuthProvider } from "@/components/auth/AuthProvider";
 import { LanguageProvider } from "@/components/i18n/LanguageProvider";
@@ -180,6 +181,8 @@ Skip to main content
 </AuthProvider>
 
 
+
+<Analytics />
 
 </body>
 
