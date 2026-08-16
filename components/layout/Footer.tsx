@@ -89,7 +89,9 @@ export function Footer() {
       </div>
     
 <div className="mt-8">
-<GoogleNewsButton />
+
+
+
 </div>
 
 </footer>
