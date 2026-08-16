@@ -82,8 +82,8 @@ export function Footer() {
         </div>
 
         <div className="mt-10 flex flex-col gap-2 border-t border-ink-800 pt-6 text-xs text-ink-300 sm:flex-row sm:items-center sm:justify-between">
-          <p>© {new Date().getFullYear()} Azeel Technologies. All rights reserved.</p>
-          <p>AZEEL NEWS is a product of Azeel Technologies.</p>
+          <p>© {new Date().getFullYear()} Azeel News | All rights reserved.</p>
+          <p>Azeel News | Powered by Azeel Technologies.</p>
         </div>
       </div>
     </footer>

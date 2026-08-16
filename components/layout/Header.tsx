@@ -12,10 +12,10 @@ import { useLanguage } from "@/components/i18n/LanguageProvider";
 
 const UTILITY_LINKS = [
   { label: "Live TV", href: "/live-tv", icon: Radio },
-  { label: "Videos", href: "/videos", icon: Film },
   { label: "Photos", href: "/photos", icon: ImageIcon },
   { label: "Trending", href: "/trending", icon: TrendingUp },
   { label: "E-Paper", href: "/e-paper", icon: Newspaper },
+  { label: "Videos", href: "/videos", icon: Film },
   { label: "Fact Check", href: "/fact-check", icon: ShieldCheck },
 ];
 
