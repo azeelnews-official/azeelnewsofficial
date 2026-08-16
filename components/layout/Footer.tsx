@@ -1,3 +1,4 @@
+import GoogleNewsButton from "./GoogleNewsButton";
 import Link from "next/link";
 import { Facebook, Instagram, Youtube, Linkedin, Send, MessageCircle } from "lucide-react";
 import { categories } from "@/lib/data/constants";
@@ -86,7 +87,13 @@ export function Footer() {
           <p>Azeel News | Powered by Azeel Technologies.</p>
         </div>
       </div>
-    </footer>
+    
+<div className="mt-8">
+<GoogleNewsButton />
+</div>
+
+</footer>
+
   );
 }
 
