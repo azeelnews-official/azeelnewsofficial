@@ -8,7 +8,7 @@ import { rateLimit } from "@/lib/redis";
 const EMAIL_RE = /^\S+@\S+\.\S+$/;
 
 export async function POST(req: Request) {
-  const { name, email, password } = (await req.json()) as {
+  const { name, email: rawEmail, password } = (await req.json()) as {
     name?: string;
     email?: string;
     password?: string;
@@ -17,6 +17,8 @@ export async function POST(req: Request) {
   if (!name || name.trim().length < 2) {
     return NextResponse.json({ error: "Enter your full name." }, { status: 400 });
   }
+  const email = rawEmail?.trim().toLowerCase() ?? "";
+
   if (!email || !EMAIL_RE.test(email)) {
     return NextResponse.json({ error: "Enter a valid email address." }, { status: 400 });
   }

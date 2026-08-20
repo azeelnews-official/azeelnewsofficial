@@ -13,16 +13,37 @@ export function BookmarksList() {
   const [articles, setArticles] = useState<any[]>([]);
 
   useEffect(() => {
+    if (!loaded || slugs.length === 0) return;
 
-    if (!loaded || slugs.length === 0) {
-      setArticles([]);
-      return;
+    let cancelled = false;
+
+    async function loadBookmarks() {
+      try {
+        const response = await fetch(
+          `/api/bookmarks?slugs=${encodeURIComponent(slugs.join(","))}`
+        );
+
+        if (!response.ok) {
+          throw new Error("Unable to load bookmarks.");
+        }
+
+        const data = await response.json();
+
+        if (!cancelled) {
+          setArticles(Array.isArray(data) ? data : []);
+        }
+      } catch {
+        if (!cancelled) {
+          setArticles([]);
+        }
+      }
     }
 
-    fetch(`/api/bookmarks?slugs=${slugs.join(",")}`)
-      .then((res) => res.json())
-      .then((data) => setArticles(data));
+    void loadBookmarks();
 
+    return () => {
+      cancelled = true;
+    };
   }, [loaded, slugs]);
 
   if (!loaded) return null;
@@ -34,7 +55,7 @@ export function BookmarksList() {
         <p className="text-sm text-ink-300">Stories you&apos;ve saved to read later.</p>
       </div>
 
-      {articles.length === 0 ? (
+      {slugs.length === 0 ? (
         <div className="border border-dashed border-hairline p-10 text-center">
           <Bookmark size={28} className="mx-auto mb-3 text-ink-300" />
           <p className="mb-1 text-sm font-semibold text-ink-800">No bookmarks yet</p>

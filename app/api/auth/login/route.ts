@@ -9,7 +9,9 @@ const EMAIL_RE = /^\S+@\S+\.\S+$/;
 const GENERIC_ERROR = "Incorrect email or password.";
 
 export async function POST(req: Request) {
-  const { email, password } = (await req.json()) as { email?: string; password?: string };
+  const { email: rawEmail, password } = (await req.json()) as { email?: string; password?: string };
+
+  const email = rawEmail?.trim().toLowerCase() ?? "";
 
   if (!email || !EMAIL_RE.test(email) || !password) {
     return NextResponse.json({ error: GENERIC_ERROR }, { status: 400 });
