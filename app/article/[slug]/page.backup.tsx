@@ -336,76 +336,33 @@ export default async function ArticlePage({
 
     "@type":"NewsArticle",
 
-    "@id":`${SITE_URL}/article/${article.slug}#article`,
-
-    url:`${SITE_URL}/article/${article.slug}`,
-
     headline: article.headline,
 
     description: article.dek,
 
-    image:[
-      {
-        "@type":"ImageObject",
-        url:article.imageUrl,
-        width:1200,
-        height:675
-      }
-    ],
+    image:[article.imageUrl],
 
-    datePublished:article.publishedAt,
+    datePublished: article.publishedAt,
 
-    dateModified:article.updatedAt || article.publishedAt,
-
-    articleSection:post.category.name,
-
-    inLanguage:"en-IN",
-
-    isAccessibleForFree:true,
-
-    keywords:[
-      post.category.name,
-      "Azeel News",
-      "India News",
-      "Latest News"
-    ],
+    dateModified: article.updatedAt,
 
     author:{
       "@type":"Person",
-      name:article.author.name,
-      url:`${SITE_URL}/author/${article.author.slug}`
+      name:article.author.name
     },
 
     publisher:{
       "@type":"NewsMediaOrganization",
-      name:"Azeel News",
-      url:SITE_URL,
-
+      name:"AZEEL NEWS",
       logo:{
         "@type":"ImageObject",
-        url:`${SITE_URL}/logo.png`,
-        width:512,
-        height:512
-      },
-
-      sameAs:[
-        "https://www.instagram.com/azeelnews",
-        "https://www.linkedin.com/company/azeelnews",
-        "https://www.youtube.com/@azeelnews",
-        "https://x.com/azeelnews"
-      ]
+        url:`${SITE_URL}/logo.png`
+      }
     },
 
     mainEntityOfPage:{
       "@type":"WebPage",
       "@id":`${SITE_URL}/article/${article.slug}`
-    },
-
-    potentialAction:{
-      "@type":"ReadAction",
-      target:[
-        `${SITE_URL}/article/${article.slug}`
-      ]
     }
 
   };
