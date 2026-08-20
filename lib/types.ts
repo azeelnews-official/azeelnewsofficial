@@ -26,8 +26,8 @@ export interface Article {
   id: string;
   slug: string;
   headline: string;
-  dek: string;
   headlineHi?: string;
+  dek: string;
   dekHi?: string;
   category: CategorySlug;
   author: Author;
