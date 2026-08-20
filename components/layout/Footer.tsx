@@ -1,4 +1,3 @@
-import GoogleNewsButton from "./GoogleNewsButton";
 import Link from "next/link";
 import { Facebook, Instagram, Youtube, Linkedin, Send, MessageCircle } from "lucide-react";
 import { categories } from "@/lib/data/constants";
@@ -41,9 +40,17 @@ export function Footer() {
       <div className="mx-auto max-w-[1400px] px-4 py-12">
         <div className="grid gap-10 md:grid-cols-[1.3fr_1fr_1fr_1fr_1.2fr]">
           <div>
-            <span className="font-display text-2xl font-black tracking-masthead text-white">
-              AZEEL <span className="text-press">NEWS</span>
-            </span>
+            <div className="flex items-center gap-3">
+              <img
+                src="/azeel.jpeg"
+                alt="Azeel News"
+                className="h-10 w-10 rounded object-contain"
+              />
+
+              <span className="font-display text-2xl font-black tracking-masthead text-white">
+                AZEEL <span className="text-press">NEWS</span>
+              </span>
+            </div>
             <p className="mt-3 max-w-xs text-sm leading-relaxed text-ink-300">
               Independent, verified reporting across India and the world — politics, business,
               technology, sports and culture.
