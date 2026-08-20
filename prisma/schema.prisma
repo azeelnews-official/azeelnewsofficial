@@ -444,64 +444,79 @@ model FactCheck {
   publishedAt DateTime @default(now())
 }
 
-
 model Video {
-  id            String   @id @default(cuid())
-  title         String
-  description   String?
-  thumbnailUrl  String?
-  videoUrl      String
-  category      String?
-  published     Boolean  @default(true)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id           String   @id @default(cuid())
+  title        String
+  description  String?
+  thumbnailUrl String?
+  videoUrl     String
+  category     String?
+  published    Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   @@index([published])
   @@index([createdAt])
 }
 
-
 model Epaper {
-  id            String   @id @default(cuid())
-  title         String
-  editionDate   DateTime
-  pdfUrl        String
-  thumbnailUrl  String?
-  published     Boolean  @default(true)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id           String   @id @default(cuid())
+  title        String
+  editionDate  DateTime
+  pdfUrl       String
+  thumbnailUrl String?
+  published    Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   @@index([editionDate])
   @@index([published])
 }
 
-
-
 model Menu {
-  id          String     @id @default(cuid())
-  name        String
-  location    String?
-  items       MenuItem[]
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  id        String     @id @default(cuid())
+  name      String
+  location  String?
+  items     MenuItem[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
 
   @@index([location])
 }
 
-
 model MenuItem {
-  id        String   @id @default(cuid())
-  menuId    String
+  id     String @id @default(cuid())
+  menuId String
 
-  title     String
-  url       String
-  order     Int      @default(0)
-  active    Boolean  @default(true)
+  title  String
+  url    String
+  order  Int     @default(0)
+  active Boolean @default(true)
 
-  menu      Menu     @relation(fields:[menuId], references:[id], onDelete:Cascade)
+  menu Menu @relation(fields: [menuId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([menuId])
+}
+
+model Notification {
+  id String @id @default(cuid())
+
+  title String
+
+  titleHi String?
+
+  body String
+
+  bodyHi String?
+
+  active Boolean @default(true)
+
+  createdAt DateTime @default(now())
+
+  updatedAt DateTime @updatedAt
+
+  @@index([active])
 }
