@@ -52,8 +52,8 @@ function mapPostToArticle(post:any):Article{
   return {
     id:post.id,
     slug:post.slug,
-    headline:post.headline,
-    dek:post.dek,
+    headline:post.headlineHi || post.headline,
+    dek:post.dekHi || post.dek,
 
     category:post.category.slug as CategorySlug,
 
@@ -88,7 +88,9 @@ function mapPostToArticle(post:any):Article{
       .map((x:any)=>x.tag?.name)
       .filter(Boolean),
 
-    body:bodyToParagraphs(post.body ?? ""),
+    body:bodyToParagraphs(
+      post.bodyHi || post.body || ""
+    ),
   };
 }
 const getArticle = unstable_cache(
@@ -106,8 +108,13 @@ const getArticle = unstable_cache(
         id:true,
         slug:true,
         headline:true,
+        headlineHi:true,
+
         dek:true,
+        dekHi:true,
+
         body:true,
+        bodyHi:true,
 
         featuredImageUrl:true,
         featuredImageAlt:true,
@@ -195,9 +202,9 @@ export async function generateMetadata({
 
       type:"article",
 
-      title:post.headline,
+      title:post.headlineHi || post.headline,
 
-      description:post.dek,
+      description:post.dekHi || post.dek,
 
       url:`${SITE_URL}/article/${slug}`,
 

@@ -103,8 +103,13 @@ export async function POST(req: Request) {
     const data = await req.json();
 
     const headline = cleanString(data.headline);
+    const headlineHi = cleanString(data.headlineHi);
+
     const dek = cleanString(data.dek);
+    const dekHi = cleanString(data.dekHi);
+
     const articleBody = cleanString(data.body);
+    const bodyHi = cleanString(data.bodyHi);
     const requestedSlug = cleanString(data.slug);
     const categorySlug = cleanString(data.category);
     const metaDescription = cleanString(data.metaDescription);
@@ -323,12 +328,19 @@ export async function POST(req: Request) {
         const createdPost = await tx.post.create({
           data: {
             slug,
+
             headline,
+            headlineHi: headlineHi || null,
+
             dek:
               dek ||
               metaDescription ||
               headline,
+
+            dekHi: dekHi || null,
+
             body: articleBody,
+            bodyHi: bodyHi || null,
             status,
             featuredImageUrl,
             featuredImageAlt,
