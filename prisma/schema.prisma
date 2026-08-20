@@ -182,9 +182,15 @@ model Post {
 
   headline String
 
+  headlineHi String?
+
   dek String @db.Text
 
+  dekHi String?
+
   body String @db.Text
+
+  bodyHi String?
 
   status PostStatus @default(DRAFT)
 
