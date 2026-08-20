@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Search, Menu, X, Radio, Film, Image as ImageIcon, TrendingUp, Newspaper, ShieldCheck } from "lucide-react";
-import { categories, readerNotifications } from "@/lib/data/constants";
+import { categories } from "@/lib/data/constants";
 import { SearchOverlay } from "./SearchOverlay";
 import { AccountMenu } from "./AccountMenu";
 import { NotificationsBell } from "@/components/shared/NotificationsBell";
@@ -22,8 +22,39 @@ const UTILITY_LINKS = [
 export function Header() {
   const [navOpen, setNavOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [notifications, setNotifications] = useState<any[]>([]);
   const { user, loading } = useAuth();
   const { locale } = useLanguage();
+
+
+  useEffect(()=>{
+
+    fetch("/api/notifications")
+    .then(res=>res.json())
+    .then(data=>{
+
+      setNotifications(
+        data.map((n:any)=>({
+          id:n.id,
+          title:
+            locale==="hi"
+            ? (n.titleHi || n.title)
+            : n.title,
+
+          body:
+            locale==="hi"
+            ? (n.bodyHi || n.body)
+            : n.body,
+
+          createdAt:n.createdAt,
+          read:false
+        }))
+      );
+
+    })
+    .catch(()=>{});
+
+  },[locale]);
 
   return (
     <header className="sticky top-0 z-50 border-b border-hairline bg-paper/95 backdrop-blur supports-[backdrop-filter]:bg-paper/80">
@@ -57,7 +88,7 @@ export function Header() {
           </button>
           {!loading && (user ? (
             <div className="flex items-center gap-3">
-              <NotificationsBell initialNotifications={readerNotifications} />
+              <NotificationsBell initialNotifications={notifications} />
               <AccountMenu />
             </div>
           ) : (
