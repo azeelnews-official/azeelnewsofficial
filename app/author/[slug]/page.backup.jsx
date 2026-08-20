@@ -7,45 +7,7 @@ const authorName = slug
 .replace(/\b\w/g, (c) => c.toUpperCase());
 
 
-const SITE_URL = "https://www.azeelnews.in";
-
-const personSchema = {
-"@context":"https://schema.org",
-"@type":"Person",
-"name":authorName,
-"url":`${SITE_URL}/author/${slug}`,
-"jobTitle":"Editor & Author",
-"description":"Editor & Author at Azeel News. Reporting verified news, technology, business and current affairs.",
-"worksFor":{
-"@type":"NewsMediaOrganization",
-"name":"Azeel News",
-"url":SITE_URL
-},
-"knowsAbout":[
-"India News",
-"Technology",
-"Business",
-"Current Affairs",
-"Politics"
-],
-"sameAs":[
-"https://www.linkedin.com/company/azeelnews",
-"https://www.instagram.com/azeelnews",
-"https://x.com/azeelnews"
-]
-};
-
-
 return (
-
-<>
-
-<script
-type="application/ld+json"
-dangerouslySetInnerHTML={{
-__html:JSON.stringify(personSchema)
-}}
-/>
 
 <main>
 
@@ -76,15 +38,15 @@ Editor & Author at Azeel News. Reporting verified news, technology, business and
 
 <div className="flex gap-5 mt-4 text-blue-600">
 
-<a href="https://www.linkedin.com/company/azeelnews">
+<a href="#">
 LinkedIn
 </a>
 
-<a href="https://www.instagram.com/azeelnews">
+<a href="#">
 Instagram
 </a>
 
-<a href="https://x.com/azeelnews">
+<a href="#">
 X
 </a>
 
@@ -162,8 +124,6 @@ Subscribe
 
 
 </main>
-
-</>
 
 )
 
