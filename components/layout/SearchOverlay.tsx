@@ -40,29 +40,65 @@ export function SearchOverlay({ onClose }: { onClose: () => void }) {
   category:string;
 };
 
-const [suggestions,setSuggestions] = useState<SearchResult[]>([]);
+const [suggestions, setSuggestions] = useState<SearchResult[]>([]);
+  const [searching, setSearching] = useState(false);
 
-useEffect(()=>{
+  useEffect(() => {
+    const trimmedQuery = query.trim();
 
-if(!query.trim()){
-setSuggestions([]);
-return;
-}
+    if (!trimmedQuery) {
+      return;
+    }
 
-const timer=setTimeout(async()=>{
+    const controller = new AbortController();
 
-const res=await fetch(`/api/search?q=${encodeURIComponent(query)}`);
+    const timer = window.setTimeout(async () => {
+      setSearching(true);
 
-const data=await res.json();
+      try {
+        const response = await fetch(
+          `/api/search?q=${encodeURIComponent(trimmedQuery)}`,
+          {
+            signal: controller.signal,
+          }
+        );
 
-setSuggestions(data);
+        if (!response.ok) {
+          throw new Error("Search request failed.");
+        }
 
-},300);
+        const data = await response.json();
 
+        if (!controller.signal.aborted) {
+          setSuggestions(Array.isArray(data) ? data : []);
+        }
+      } catch (error) {
+        if (
+          error instanceof DOMException &&
+          error.name === "AbortError"
+        ) {
+          return;
+        }
 
-return ()=>clearTimeout(timer);
+        if (!controller.signal.aborted) {
+          setSuggestions([]);
+        }
+      } finally {
+        if (!controller.signal.aborted) {
+          setSearching(false);
+        }
+      }
+    }, 300);
 
-},[query]);
+    return () => {
+      window.clearTimeout(timer);
+      controller.abort();
+    };
+  }, [query]);
+
+  const visibleSuggestions = query.trim()
+    ? suggestions
+    : [];
 
   function runSearch(term: string) {
     const trimmed = term.trim();
@@ -148,9 +184,9 @@ return ()=>clearTimeout(timer);
           </button>
         </form>
 
-        {suggestions.length > 0 ? (
+        {visibleSuggestions.length > 0 ? (
           <ul className="mt-3 divide-y divide-hairline border-t border-hairline">
-            {suggestions.map((article) => (
+            {visibleSuggestions.map((article) => (
               <li key={article.id}>
                 <Link
                   href={`/article/${article.slug}`}

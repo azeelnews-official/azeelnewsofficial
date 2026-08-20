@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { ThumbsUp, Trash2 } from "lucide-react";
 import type { Comment } from "@/lib/types";
 import { formatRelativeTime } from "@/lib/utils";
@@ -17,6 +18,8 @@ export function CommentSection({
   articleId: string;
   initialComments: Comment[];
 }) {
+  const router = useRouter();
+
   const [comments, setComments] = useState<CommentWithLike[]>(
     initialComments.map((comment) => ({
       ...comment,
@@ -57,7 +60,7 @@ export function CommentSection({
 
       if (!response.ok) {
         if (response.status === 401) {
-          window.location.href = "/login";
+          router.push("/login");
           return;
         }
 
@@ -108,7 +111,7 @@ export function CommentSection({
 
       if (!response.ok) {
         if (response.status === 401) {
-          window.location.href = "/login";
+          router.push("/login");
           return;
         }
 
@@ -164,7 +167,7 @@ export function CommentSection({
 
       if (!response.ok) {
         if (response.status === 401) {
-          window.location.href = "/login";
+          router.push("/login");
           return;
         }
 
