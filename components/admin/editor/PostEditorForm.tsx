@@ -23,6 +23,8 @@ export interface PostEditorInitialValues {
   tags?: string[];
   featuredImageUrl?: string;
   body?: string;
+  bodyHi?: string;
+  headlineHi?: string;
   metaDescription?: string;
   status?: PostStatus;
   scheduledAt?: string;
@@ -55,6 +57,10 @@ export function PostEditorForm({
     initialValues.title ?? ""
   );
 
+  const [headlineHi, setHeadlineHi] = useState(
+    initialValues.headlineHi ?? ""
+  );
+
   const [slugOverride, setSlugOverride] =
     useState<string | null>(
       mode === "edit"
@@ -84,6 +90,10 @@ export function PostEditorForm({
 
   const [body, setBody] = useState(
     initialValues.body ?? ""
+  );
+
+  const [bodyHi, setBodyHi] = useState(
+    initialValues.bodyHi ?? ""
   );
 
   const [metaDescription, setMetaDescription] =
@@ -149,11 +159,13 @@ export function PostEditorForm({
 
       const payload = {
         headline: title.trim(),
+        headlineHi: headlineHi.trim(),
         slug: slug.trim(),
         dek:
           metaDescription.trim() ||
           title.trim(),
         body: body.trim(),
+        bodyHi: bodyHi.trim(),
         category,
         tags,
         featuredImageUrl:
@@ -273,6 +285,16 @@ export function PostEditorForm({
             className="mb-3 w-full border-b-2 border-hairline bg-transparent pb-3 font-display text-2xl font-bold text-ink-950 outline-none placeholder:text-ink-300 focus:border-azeel"
           />
 
+          <input
+            type="text"
+            value={headlineHi}
+            onChange={(e) =>
+              setHeadlineHi(e.target.value)
+            }
+            placeholder="Hindi headline (हिंदी शीर्षक)"
+            className="mb-4 w-full border-b border-hairline bg-transparent pb-3 text-lg text-ink-900 outline-none placeholder:text-ink-300 focus:border-azeel"
+          />
+
           <p className="mb-4 font-mono text-xs text-ink-300">
             /article/
             <input
@@ -355,6 +377,16 @@ export function PostEditorForm({
                   placeholder="Write the story in Markdown… use the toolbar for formatting, images, and YouTube embeds."
                   rows={20}
                   className="w-full resize-y px-5 py-4 font-mono text-sm leading-relaxed text-ink-900 outline-none placeholder:text-ink-300"
+                />
+
+                <textarea
+                  value={bodyHi}
+                  onChange={(e) =>
+                    setBodyHi(e.target.value)
+                  }
+                  placeholder="Write Hindi article..."
+                  rows={20}
+                  className="mt-4 w-full resize-y border-t border-hairline px-5 py-4 font-mono text-sm leading-relaxed text-ink-900 outline-none placeholder:text-ink-300"
                 />
               </div>
             ) : (
