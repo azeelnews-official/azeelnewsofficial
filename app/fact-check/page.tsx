@@ -7,6 +7,10 @@ import { CookieConsent } from "@/components/layout/CookieConsent";
 import { getFactChecks, type FactCheckVerdict } from "@/lib/data/fact-check";
 import { formatRelativeTime, cn } from "@/lib/utils";
 
+
+export const dynamic = "force-dynamic";
+export const revalidate = 60;
+
 export const metadata: Metadata = {
   title: "Fact Check",
   description: "AZEEL NEWS verifies viral claims and separates fact from fiction.",
