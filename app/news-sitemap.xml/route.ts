@@ -3,12 +3,26 @@ import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 
+const SITE_URL = "https://www.azeelnews.in";
+
+function escapeXml(text:string){
+  return text
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&apos;");
+}
+
 export async function GET(){
 
 const posts = await prisma.post.findMany({
 
 where:{
-status:"PUBLISHED"
+status:"PUBLISHED",
+publishedAt:{
+not:null
+}
 },
 
 orderBy:{
@@ -30,30 +44,25 @@ const urls = posts.map((post)=>`
 
 <url>
 
-<loc>
-https://www.azeelnews.in/article/${post.slug}
-</loc>
+<loc>${SITE_URL}/article/${post.slug}</loc>
 
 <news:news>
 
 <news:publication>
 
-<news:name>Azeel News</news:name>
+<news:name>AZEEL NEWS</news:name>
 
-<news:language>en</news:language>
+<news:language>en-IN</news:language>
 
 </news:publication>
 
-
 <news:publication_date>
-${new Date(post.publishedAt ?? new Date()).toISOString()}
+${post.publishedAt?.toISOString()}
 </news:publication_date>
 
-
 <news:title>
-${post.headline.replace(/&/g,"&amp;")}
+${escapeXml(post.headline)}
 </news:title>
-
 
 </news:news>
 
@@ -64,7 +73,7 @@ ${post.headline.replace(/&/g,"&amp;")}
 
 const xml = `<?xml version="1.0" encoding="UTF-8"?>
 
-<urlset
+<urlset 
 xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
 xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
 
@@ -75,7 +84,7 @@ ${urls}
 
 return new NextResponse(xml,{
 headers:{
-"Content-Type":"application/xml"
+"Content-Type":"application/xml; charset=utf-8"
 }
 });
 
