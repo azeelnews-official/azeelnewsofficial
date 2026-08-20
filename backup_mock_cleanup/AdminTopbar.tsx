@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { ChevronDown, Menu, Search } from "lucide-react";
 import { NotificationsBell } from "@/components/shared/NotificationsBell";
-const adminNotifications:any[] = [];
+import { adminNotifications } from "@/lib/mock-data";
 
 export function AdminTopbar({ adminName = "Alok", onMenuClick }: { adminName?: string; onMenuClick?: () => void }) {
   const [menuOpen, setMenuOpen] = useState(false);

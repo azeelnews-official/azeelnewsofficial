@@ -2,13 +2,7 @@
 
 import { useState } from "react";
 import { Bell, Check } from "lucide-react";
-type AppNotification = {
-  id: string;
-  title: string;
-  body: string;
-  read: boolean;
-  createdAt: string;
-};
+import type { AppNotification } from "@/lib/mock-data";
 import { formatRelativeTime, cn } from "@/lib/utils";
 
 export function NotificationsBell({ initialNotifications }: { initialNotifications: AppNotification[] }) {
