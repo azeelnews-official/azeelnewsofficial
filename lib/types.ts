@@ -27,6 +27,8 @@ export interface Article {
   slug: string;
   headline: string;
   dek: string;
+  headlineHi?: string;
+  dekHi?: string;
   category: CategorySlug;
   author: Author;
   publishedAt: string;
@@ -39,6 +41,7 @@ export interface Article {
   views?: number;
   tags?: string[];
   body?: string[];
+  bodyHi?: string[];
   location?: string;
 }
 
