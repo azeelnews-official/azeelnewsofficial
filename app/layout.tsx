@@ -193,7 +193,7 @@ clientOptions: { theme: "light", lang: "en" },
 
 
 
-<body>
+<body className="min-h-screen bg-paper text-ink-950 antialiased">
 
 
 <a href="#main-content" className="skip-link">

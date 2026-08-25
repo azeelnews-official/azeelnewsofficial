@@ -223,3 +223,24 @@ img {
     max-width: 100%;
   }
 }
+
+/* AZEEL FINAL FOOTER BOTTOM SPACE FIX */
+
+html,
+body {
+  min-height: 100%;
+}
+
+html {
+  background: #0b1220;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background: #0b1220;
+}
+
+footer {
+  margin-bottom: 0 !important;
+}

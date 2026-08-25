@@ -72,14 +72,18 @@ export function Header() {
 
         <Link
           href="/"
-          className="min-w-0 shrink flex items-center gap-2"
+          className="flex min-w-0 items-center gap-2 sm:gap-2.5"
           aria-label="AZEEL NEWS home"
         >
-          <span className="font-display whitespace-nowrap text-[21px] leading-none font-black tracking-[-0.04em] text-ink-950 dark:text-white sm:text-2xl md:text-4xl">
+          <img
+            src="/logo.png"
+            alt="Azeel News"
+            width={36}
+            height={36}
+            className="h-8 w-8 shrink-0 rounded-full object-cover ring-1 ring-ink-200/70 dark:ring-white/20 sm:h-9 sm:w-9"
+          />
+          <span className="font-display whitespace-nowrap text-[20px] leading-none font-black tracking-[-0.04em] text-ink-950 dark:text-white sm:text-2xl md:text-4xl">
             AZEEL <span className="text-press">NEWS</span>
-          </span>
-          <span className="sr-only">
-            Reported. Verified. Delivered.
           </span>
         </Link>
 
