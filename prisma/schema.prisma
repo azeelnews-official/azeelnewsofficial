@@ -526,3 +526,32 @@ model Notification {
 
   @@index([active])
 }
+
+model WidgetArea {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  widgets Widget[]
+}
+
+model Widget {
+  id        String   @id @default(cuid())
+  areaId    String
+  name      String
+  slug      String
+  enabled   Boolean  @default(true)
+  order     Int      @default(0)
+  config    Json?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  area WidgetArea @relation(fields: [areaId], references: [id], onDelete: Cascade)
+
+  @@index([areaId])
+  @@index([enabled])
+  @@index([order])
+}
+
