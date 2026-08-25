@@ -71,8 +71,8 @@ export function Header() {
         </button>
 
         <Link href="/" className="flex flex-col items-center md:items-start" aria-label="AZEEL NEWS home">
-          <span className="font-display text-3xl font-black tracking-masthead text-ink-950 md:text-4xl">
-            AZEEL <span className="text-press">NEWS</span>
+          <span className="font-display text-3xl font-black tracking-masthead text-ink-950 dark:text-white md:text-4xl">
+            AZEEL <span className="text-press dark:text-press">NEWS</span>
           </span>
           <span className="mt-0.5 hidden font-mono text-[10px] tracking-eyebrow text-ink-300 md:block">
             REPORTED. VERIFIED. DELIVERED.

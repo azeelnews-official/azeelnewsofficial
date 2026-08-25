@@ -54,7 +54,7 @@ export async function Footer() {
               <img
                 src="/azeel.jpeg"
                 alt="Azeel News"
-                className="h-10 w-10 rounded object-contain"
+                className="h-10 w-10 rounded-full object-contain ring-2 ring-slate-300 dark:ring-white/20 object-cover"
               />
 
               <span className="font-display text-2xl font-black tracking-masthead text-white">
