@@ -8,7 +8,6 @@ import { Footer } from "@/components/layout/Footer";
 import { CookieConsent } from "@/components/layout/CookieConsent";
 import { HeroSection } from "@/components/home/HeroSection";
 import { ArticleCard } from "@/components/home/ArticleCard";
-import { AdSlot } from "@/components/home/AdSlot";
 import { CategorySection } from "@/components/home/CategorySection";
 import { VideoGallery } from "@/components/home/VideoGallery";
 import { PublicWidgetArea } from "@/components/widgets/PublicWidgetArea";
@@ -150,9 +149,9 @@ return (
 <div className="mx-auto max-w-[1400px] px-4">
 
 
-<div className="py-6">
-<AdSlot size="leaderboard"/>
-</div>
+<PublicWidgetArea
+  area="homepage-top"
+/>
 
 
 
@@ -213,9 +212,9 @@ articles={business}
 
 
 
-<div className="py-6">
-<AdSlot size="inline"/>
-</div>
+<PublicWidgetArea
+  area="homepage-inline"
+/>
 
 
 

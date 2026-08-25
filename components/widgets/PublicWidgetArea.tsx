@@ -5,7 +5,7 @@ import { RelatedArticles } from "@/components/article/RelatedArticles";
 import { getWidgets } from "@/lib/data/widgets";
 import type { Article } from "@/lib/types";
 
-type WidgetArea = "home-sidebar" | "article-sidebar";
+type WidgetArea = "home-sidebar" | "article-sidebar" | "homepage-top" | "homepage-inline";
 
 interface PublicWidgetAreaProps {
   area: WidgetArea;
