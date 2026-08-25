@@ -60,9 +60,9 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-hairline bg-paper/95 backdrop-blur supports-[backdrop-filter]:bg-paper/80">
-      <div className="mx-auto flex max-w-[1400px] items-center justify-between gap-4 px-4 py-3 md:py-4">
+      <div className="mx-auto flex max-w-[1400px] items-center justify-between gap-2 px-3 py-2.5 sm:gap-3 sm:px-4 sm:py-3 md:gap-4 md:py-4">
         <button
-          className="text-ink-800 md:hidden"
+          className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-ink-800 transition-colors hover:bg-ink-50 dark:text-white dark:hover:bg-white/10 md:hidden"
           aria-label="Open menu"
           aria-expanded={navOpen}
           onClick={() => setNavOpen((v) => !v)}
@@ -70,45 +70,49 @@ export function Header() {
           {navOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
 
-        <Link href="/" className="flex flex-col items-center md:items-start" aria-label="AZEEL NEWS home">
-          <span className="font-display text-3xl font-black tracking-masthead text-ink-950 dark:text-white md:text-4xl">
-            AZEEL <span className="text-press dark:text-press">NEWS</span>
+        <Link
+          href="/"
+          className="min-w-0 shrink flex items-center gap-2"
+          aria-label="AZEEL NEWS home"
+        >
+          <span className="font-display whitespace-nowrap text-[21px] leading-none font-black tracking-[-0.04em] text-ink-950 dark:text-white sm:text-2xl md:text-4xl">
+            AZEEL <span className="text-press">NEWS</span>
           </span>
-          <span className="mt-0.5 hidden font-mono text-[10px] tracking-eyebrow text-ink-300 md:block">
-            REPORTED. VERIFIED. DELIVERED.
+          <span className="sr-only">
+            Reported. Verified. Delivered.
           </span>
         </Link>
 
-        <div className="flex items-center gap-3">
+        <div className="flex shrink-0 items-center gap-1 sm:gap-1.5 md:gap-3">
           <ThemeToggle />
           <button
             aria-label="Search"
             aria-expanded={searchOpen}
             onClick={() => setSearchOpen((v) => !v)}
-            className="rounded-full p-1.5 text-ink-800 transition-colors hover:bg-ink-50 dark:text-white dark:hover:bg-white/10 sm:p-2"
+            className="inline-flex h-8 w-8 items-center justify-center rounded-full text-ink-800 transition-colors hover:bg-ink-50 dark:text-white dark:hover:bg-white/10 sm:h-9 sm:w-9 md:h-auto md:w-auto md:p-2"
           >
-            <Search size={18} className="sm:h-5 sm:w-5" />
+            <Search size={17} className="sm:h-[18px] sm:w-[18px] md:h-5 md:w-5" />
           </button>
           {!loading && (
           <Link
             href={user ? "/profile" : "/login"}
             aria-label={user ? "Open profile" : "Sign in"}
             title={user ? "Profile" : "Sign in"}
-            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-ink-200 bg-white text-ink-800 shadow-sm transition hover:bg-ink-50 dark:border-white/20 dark:bg-white/10 dark:text-white dark:hover:bg-white/15 md:hidden"
+            className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-ink-200 bg-white text-ink-800 shadow-sm transition hover:bg-ink-50 dark:border-white/20 dark:bg-white/10 dark:text-white dark:hover:bg-white/15 sm:h-9 sm:w-9 md:hidden"
           >
-            <UserRound size={18} />
+            <UserRound size={17} className="sm:h-[18px] sm:w-[18px]" />
           </Link>
         )}
 
         {!loading && (user ? (
-            <div className="flex items-center gap-3">
+            <div className="flex shrink-0 items-center gap-1 sm:gap-1.5 md:gap-3">
               <NotificationsBell initialNotifications={notifications} />
               <AccountMenu />
             </div>
           ) : (
             <Link
               href="/login"
-              className="hidden rounded-md bg-azeel px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-azeel-dark md:inline-block"
+              className="hidden rounded-md bg-azeel px-3.5 py-2 text-sm font-semibold text-white transition-colors hover:bg-azeel-dark md:inline-block"
             >
               Sign In
             </Link>

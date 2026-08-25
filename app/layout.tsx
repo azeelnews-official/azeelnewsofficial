@@ -163,15 +163,11 @@ return (
 <head>
 
 <script
-
-type="application/ld+json"
-
-dangerouslySetInnerHTML={{
-
-__html:JSON.stringify(organizationSchema)
-
-}}
-
+  type="application/ld+json"
+  suppressHydrationWarning
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify(organizationSchema),
+  }}
 />
 
 

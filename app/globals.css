@@ -150,3 +150,76 @@ img {
     scroll-behavior: auto !important;
   }
 }
+
+
+/* AZEEL FINAL RESPONSIVE HEADER POLISH */
+
+@media (max-width: 639px) {
+  header.sticky > div {
+    min-height: 58px;
+  }
+
+  header.sticky a[aria-label="AZEEL NEWS home"] {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  header.sticky a[aria-label="AZEEL NEWS home"] > span:first-child {
+    overflow: hidden;
+    text-overflow: clip;
+    white-space: nowrap;
+  }
+
+  header.sticky button {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+@media (max-width: 380px) {
+  header.sticky > div {
+    padding-left: 10px;
+    padding-right: 10px;
+    gap: 3px;
+  }
+
+  header.sticky a[aria-label="AZEEL NEWS home"] > span:first-child {
+    font-size: 19px;
+    letter-spacing: -0.045em;
+  }
+
+  header.sticky > div > .flex:last-child {
+    gap: 0;
+  }
+
+  header.sticky > div > .flex:last-child > button {
+    width: 31px;
+    height: 31px;
+  }
+}
+
+@media (min-width: 381px) and (max-width: 639px) {
+  header.sticky a[aria-label="AZEEL NEWS home"] > span:first-child {
+    font-size: 21px;
+  }
+}
+
+/* Dark mode brand contrast:
+   AZEEL is white, NEWS remains the Azeel red. */
+.dark header.sticky a[aria-label="AZEEL NEWS home"] > span:first-child {
+  color: #ffffff;
+}
+
+.dark header.sticky a[aria-label="AZEEL NEWS home"] .text-press {
+  color: #ef233c;
+}
+
+/* Keep article/home content from touching the mobile edges. */
+@media (max-width: 639px) {
+  main {
+    overflow-x: clip;
+  }
+
+  img {
+    max-width: 100%;
+  }
+}
