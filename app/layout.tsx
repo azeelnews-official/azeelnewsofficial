@@ -7,6 +7,8 @@ import { LanguageProvider } from "@/components/i18n/LanguageProvider";
 import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
 
 
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
+import { PWAInstallPrompt } from "@/components/pwa/PWAInstallPrompt";
 const SITE_URL = "https://www.azeelnews.in";
 const SITE_NAME = "AZEEL NEWS";
 
@@ -155,7 +157,7 @@ children:React.ReactNode
 
 return (
 
-<html lang="en-IN">
+<html suppressHydrationWarning lang="en-IN">
 
 
 <head>
@@ -213,6 +215,7 @@ Skip to main content
 <LanguageProvider>
 
 {children}
+      <PWAInstallPrompt />
 
 </LanguageProvider>
 

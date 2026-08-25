@@ -70,3 +70,83 @@
     @apply sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded focus:bg-azeel focus:px-4 focus:py-2 focus:text-white;
   }
 }
+
+/* ============================================================
+   AZEEL NEWS — RESPONSIVE / DARK MODE / SMOOTHNESS
+   ============================================================ */
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body {
+  overflow-x: hidden;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+img {
+  max-width: 100%;
+}
+
+@media (max-width: 767px) {
+  body {
+    font-size: 15px;
+  }
+
+  h1 {
+    letter-spacing: -0.025em;
+  }
+
+  h2 {
+    letter-spacing: -0.02em;
+  }
+
+  input,
+  textarea,
+  select {
+    font-size: 16px;
+  }
+}
+
+/* Compact mobile newsroom layout */
+@media (max-width: 640px) {
+  .mx-auto.max-w-\[1400px\] {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  main {
+    overflow-x: clip;
+  }
+}
+
+/* Better mobile touch targets */
+@media (max-width: 767px) {
+  nav a,
+  nav button {
+    min-height: 42px;
+  }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

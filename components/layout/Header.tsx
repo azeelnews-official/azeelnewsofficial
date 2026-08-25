@@ -1,8 +1,10 @@
 "use client";
 
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
+
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Search, Menu, X, Radio, Film, Image as ImageIcon, TrendingUp, Newspaper, ShieldCheck } from "lucide-react";
+import { Search, Menu, X, UserRound, Radio, Film, Image as ImageIcon, TrendingUp, Newspaper, ShieldCheck } from "lucide-react";
 import { categories } from "@/lib/data/constants";
 import { SearchOverlay } from "./SearchOverlay";
 import { AccountMenu } from "./AccountMenu";
@@ -78,15 +80,27 @@ export function Header() {
         </Link>
 
         <div className="flex items-center gap-3">
+          <ThemeToggle />
           <button
             aria-label="Search"
             aria-expanded={searchOpen}
             onClick={() => setSearchOpen((v) => !v)}
-            className="rounded-full p-2 text-ink-800 transition-colors hover:bg-ink-50"
+            className="rounded-full p-1.5 text-ink-800 transition-colors hover:bg-ink-50 dark:text-white dark:hover:bg-white/10 sm:p-2"
           >
-            <Search size={20} />
+            <Search size={18} className="sm:h-5 sm:w-5" />
           </button>
-          {!loading && (user ? (
+          {!loading && (
+          <Link
+            href={user ? "/profile" : "/login"}
+            aria-label={user ? "Open profile" : "Sign in"}
+            title={user ? "Profile" : "Sign in"}
+            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-ink-200 bg-white text-ink-800 shadow-sm transition hover:bg-ink-50 dark:border-white/20 dark:bg-white/10 dark:text-white dark:hover:bg-white/15 md:hidden"
+          >
+            <UserRound size={18} />
+          </Link>
+        )}
+
+        {!loading && (user ? (
             <div className="flex items-center gap-3">
               <NotificationsBell initialNotifications={notifications} />
               <AccountMenu />
