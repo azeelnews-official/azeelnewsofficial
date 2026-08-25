@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { getCurrentSession } from "@/lib/auth/session";
 import { prisma } from "@/lib/prisma";
 
@@ -136,6 +137,9 @@ export async function PATCH(req: Request) {
     where: { id: payload.widgetId },
     data,
   });
+
+  revalidatePath("/");
+  revalidatePath("/article/[slug]", "page");
 
   return NextResponse.json({ widget });
 }

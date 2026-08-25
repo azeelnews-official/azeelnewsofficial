@@ -8,10 +8,9 @@ import { Footer } from "@/components/layout/Footer";
 import { CookieConsent } from "@/components/layout/CookieConsent";
 import { HeroSection } from "@/components/home/HeroSection";
 import { ArticleCard } from "@/components/home/ArticleCard";
-import { TrendingSidebar } from "@/components/home/TrendingSidebar";
+import { AdSlot } from "@/components/home/AdSlot";
 import { CategorySection } from "@/components/home/CategorySection";
 import { VideoGallery } from "@/components/home/VideoGallery";
-import { AdSlot } from "@/components/home/AdSlot";
 import { PublicWidgetArea } from "@/components/widgets/PublicWidgetArea";
 import { getPublishedVideos } from "@/lib/data/videos";
 
@@ -188,9 +187,10 @@ article={article}
 
 <div className="flex flex-col gap-8">
 
-<TrendingSidebar articles={trending}/>
-
-<AdSlot size="sidebar"/>
+<PublicWidgetArea
+  area="home-sidebar"
+  articles={trending}
+/>
 
 </div>
 

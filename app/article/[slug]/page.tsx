@@ -20,7 +20,6 @@ import { TagList } from "@/components/article/TagList";
 import { ArticleInteractive } from "@/components/article/ArticleInteractive";
 import { RelatedArticles } from "@/components/article/RelatedArticles";
 import { CommentSection } from "@/components/article/CommentSection";
-import { NewsletterInline } from "@/components/article/NewsletterInline";
 import { GoogleNewsFollow } from "@/components/article/GoogleNewsFollow";
 
 const SITE_URL = "https://www.azeelnews.in";
@@ -606,15 +605,11 @@ export default async function ArticlePage({
 
 
             <aside className="flex flex-col gap-8">
-
-
-              <AdSlot size="sidebar"/>
-
-
-              <NewsletterInline/>
-
-
-            </aside>
+  <PublicWidgetArea
+    area="article-sidebar"
+    articles={related}
+  />
+</aside>
 
 
           </div>
