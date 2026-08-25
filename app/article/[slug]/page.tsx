@@ -13,6 +13,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { CookieConsent } from "@/components/layout/CookieConsent";
 import { AdSlot } from "@/components/home/AdSlot";
+import { PublicWidgetArea } from "@/components/widgets/PublicWidgetArea";
 import { ArticleMeta } from "@/components/home/ArticleMeta";
 import { AuthorCard } from "@/components/article/AuthorCard";
 import { TagList } from "@/components/article/TagList";

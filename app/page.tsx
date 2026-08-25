@@ -12,6 +12,7 @@ import { TrendingSidebar } from "@/components/home/TrendingSidebar";
 import { CategorySection } from "@/components/home/CategorySection";
 import { VideoGallery } from "@/components/home/VideoGallery";
 import { AdSlot } from "@/components/home/AdSlot";
+import { PublicWidgetArea } from "@/components/widgets/PublicWidgetArea";
 import { getPublishedVideos } from "@/lib/data/videos";
 
 import {
