@@ -88,7 +88,7 @@ export function Header() {
         </Link>
 
         <div className="flex shrink-0 items-center gap-1 sm:gap-1.5 md:gap-3">
-          <ThemeToggle />
+          <div className="flex md:hidden items-center"><ThemeToggle /></div>
           <button
             aria-label="Search"
             aria-expanded={searchOpen}
