@@ -35,13 +35,13 @@ export function AuthLayout({
       <div className="flex items-center justify-center px-6 py-12">
         <div className="w-full max-w-sm">
           <Link href="/" className="mb-8 block w-fit lg:hidden">
-            <span className="font-display text-2xl font-black tracking-masthead text-ink-950">
+            <span className="font-display text-2xl font-black tracking-masthead text-ink-950 dark:text-white">
               AZEEL <span className="text-press">NEWS</span>
             </span>
           </Link>
 
-          <h1 className="mb-1.5 font-display text-2xl font-bold text-ink-950">{title}</h1>
-          <p className="mb-7 text-sm text-ink-300">{subtitle}</p>
+          <h1 className="mb-1.5 font-display text-2xl font-bold text-ink-950 dark:text-white">{title}</h1>
+          <p className="mb-7 text-sm text-ink-300 dark:text-ink-100">{subtitle}</p>
 
           {children}
         </div>
