@@ -1,5 +1,3 @@
-export const dynamic = "force-dynamic";
-
 import { TopBar } from "@/components/layout/TopBar";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";

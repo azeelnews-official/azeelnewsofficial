@@ -1,9 +1,7 @@
-import { connection } from "next/server";
 import Link from "next/link";
 import { Facebook, Instagram, Youtube, Linkedin, Send, MessageCircle } from "lucide-react";
 import { categories } from "@/lib/data/constants";
 import { FooterNewsletterForm } from "./FooterNewsletterForm";
-import { getWidgets } from "@/lib/data/widgets";
 
 const COMPANY_LINKS = [
   { label: "About Us", href: "/about" },
@@ -36,18 +34,7 @@ const SOCIAL_LINKS = [
   { icon: MessageCircle, label: "WhatsApp Channel", href: "https://whatsapp.com/channel/azeelnews" },
 ];
 
-export async function Footer() {
-  await connection();
-
-  const widgetAreas = await getWidgets();
-  const footerArea = widgetAreas.find((area) => area.slug === "footer");
-  const enabledWidgets = new Set(
-    footerArea?.widgets
-      .filter((widget) => widget.enabled)
-      .sort((a, b) => a.order - b.order)
-      .map((widget) => widget.slug) ?? []
-  );
-
+export function Footer() {
   return (
     <footer className="border-t border-hairline-dark bg-ink-950 text-ink-100">
       <div className="mx-auto max-w-[1400px] px-4 py-12">
@@ -57,7 +44,7 @@ export async function Footer() {
               <img
                 src="/azeel.jpeg"
                 alt="Azeel News"
-                className="h-10 w-10 rounded-full object-contain ring-2 ring-slate-300 dark:ring-white/20 object-cover"
+                className="h-10 w-10 rounded object-contain"
               />
 
               <span className="font-display text-2xl font-black tracking-masthead text-white">
@@ -69,8 +56,7 @@ export async function Footer() {
               technology, sports and culture.
             </p>
             <div className="mt-5 flex gap-3">
-              {enabledWidgets.has("social-links") &&
-              SOCIAL_LINKS.map(({ icon: Icon, label, href }) => (
+              {SOCIAL_LINKS.map(({ icon: Icon, label, href }) => (
                 <a
                   key={label}
                   href={href}

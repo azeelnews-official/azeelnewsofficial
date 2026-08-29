@@ -189,6 +189,25 @@ clientOptions: { theme: "light", lang: "en" },
 }}
 />
 
+
+<script async type="application/javascript"
+src="https://news.google.com/swg/js/v1/swg-basic.js"></script>
+
+<script
+dangerouslySetInnerHTML={{
+__html: `
+(self.SWG_BASIC = self.SWG_BASIC || []).push( basicSubscriptions => {
+basicSubscriptions.init({
+type: "NewsArticle",
+isPartOfType: ["Product"],
+isPartOfProductId: "CAowxcXHDA:openaccess",
+clientOptions: { theme: "light", lang: "en" },
+});
+});
+`
+}}
+/>
+
 </head>
 
 
