@@ -19,6 +19,7 @@ import {
 } from "@/lib/content/articles";
 
 
+export const dynamic = "force-dynamic";
 export const revalidate = 60;
 
 

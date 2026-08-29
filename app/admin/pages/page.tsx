@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { PagesManager } from "@/components/admin/pages/PagesManager";
 import { getAdminPages } from "@/lib/data/pages";
 

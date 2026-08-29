@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { NewsletterManager } from "@/components/admin/newsletter/NewsletterManager";
 import { getNewsletterData } from "@/lib/data/newsletter";
 

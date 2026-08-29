@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { FileText, Eye, Users, MessageSquare } from "lucide-react";
 import { StatCard } from "@/components/admin/StatCard";
 import { TrafficChart } from "@/components/admin/TrafficChart";

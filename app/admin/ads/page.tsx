@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { AdsManager } from "@/components/admin/ads/AdsManager";
 import { getAdCampaigns } from "@/lib/data/ads";
 

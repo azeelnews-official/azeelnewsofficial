@@ -1,3 +1,4 @@
+import { connection } from "next/server";
 import Link from "next/link";
 import { Facebook, Instagram, Youtube, Linkedin, Send, MessageCircle } from "lucide-react";
 import { categories } from "@/lib/data/constants";
@@ -36,6 +37,8 @@ const SOCIAL_LINKS = [
 ];
 
 export async function Footer() {
+  await connection();
+
   const widgetAreas = await getWidgets();
   const footerArea = widgetAreas.find((area) => area.slug === "footer");
   const enabledWidgets = new Set(

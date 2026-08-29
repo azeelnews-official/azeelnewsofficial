@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { ROLE_PERMISSIONS, getRoleStats } from "@/lib/data/roles";
 
 export const metadata = {

@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { CommentsManager } from "@/components/admin/comments/CommentsManager";
 import { getAllComments } from "@/lib/data/comments";
 

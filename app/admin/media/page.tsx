@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { MediaManager } from "@/components/admin/media/MediaManager";
 import { getAdminMedia } from "@/lib/data/media";
 

@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { RedirectsManager } from "@/components/admin/redirects/RedirectsManager";
 import { prisma } from "@/lib/prisma";
 

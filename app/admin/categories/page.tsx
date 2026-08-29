@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { CategoriesManager } from "@/components/admin/categories/CategoriesManager";
 import { getCategoriesWithCounts } from "@/lib/data/categories";
 

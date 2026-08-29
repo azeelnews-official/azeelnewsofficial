@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { LogsViewer } from "@/components/admin/logs/LogsViewer";
 import { getAuditLogs } from "@/lib/data/logs";
 

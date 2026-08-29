@@ -8,233 +8,113 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-// ---------- Enums ----------
-
-enum Role {
-  READER
-  JOURNALIST
-  EDITOR
-  ADMIN
-}
-
-enum PostStatus {
-  DRAFT
-  SCHEDULED
-  PUBLISHED
-  ARCHIVED
-}
-
-enum AdPlacement {
-  LEADERBOARD
-  SIDEBAR
-  INLINE
-  STICKY
-  NATIVE
-}
-
-enum AdStatus {
-  ACTIVE
-  PAUSED
-  ENDED
-}
-
-enum MediaType {
-  IMAGE
-  VIDEO
-}
-
-enum Locale {
-  EN
-  HI
-}
-
-enum CommentStatus {
-  PENDING
-  APPROVED
-  REJECTED
-}
-
-// ---------- Auth ----------
-
 model User {
-  id String @id @default(cuid())
-
-  name String
-
-  email String @unique
-
-  passwordHash String?
-
-  image String?
-
-  role Role @default(READER)
-
+  id            String        @id @default(cuid())
+  name          String
+  email         String        @unique
+  passwordHash  String?
+  image         String?
+  role          Role          @default(READER)
   emailVerified DateTime?
-
-  createdAt DateTime @default(now())
-
-  updatedAt DateTime @updatedAt
-
-  accounts Account[]
-
-  sessions Session[]
-
-  posts Post[] @relation("PostAuthor")
-
-  comments Comment[]
-
-  commentLikes CommentLike[]
-
-  bookmarks Bookmark[]
-
-  auditLogs AuditLog[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  accounts      Account[]
+  auditLogs     AuditLog[]
+  bookmarks     Bookmark[]
+  comments      Comment[]
+  commentLikes  CommentLike[]
+  posts         Post[]        @relation("PostAuthor")
+  sessions      Session[]
 
   @@index([role])
 }
 
 model Account {
-  id String @id @default(cuid())
-
-  userId String
-
-  provider String
-
+  id                String  @id @default(cuid())
+  userId            String
+  provider          String
   providerAccountId String
-
-  accessToken String? @db.Text
-
-  refreshToken String? @db.Text
-
-  expiresAt Int?
-
-  tokenType String?
-
-  scope String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken       String?
+  refreshToken      String?
+  expiresAt         Int?
+  tokenType         String?
+  scope             String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
   @@index([userId])
 }
 
 model Session {
-  id String @id @default(cuid())
-
-  sessionToken String @unique
-
-  userId String
-
-  expires DateTime
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
 }
 
 model PasswordResetToken {
-  id String @id @default(cuid())
-
-  email String
-
-  token String @unique
-
+  id        String    @id @default(cuid())
+  email     String
+  token     String    @unique
   expiresAt DateTime
-
-  usedAt DateTime?
-
-  createdAt DateTime @default(now())
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
 
   @@index([email])
 }
 
-// ---------- Content ----------
-
 model Category {
-  id String @id @default(cuid())
-
-  slug String @unique
-
-  name String
-
+  id     String @id @default(cuid())
+  slug   String @unique
+  name   String
   nameHi String
-
-  posts Post[]
+  posts  Post[]
 
   @@index([slug])
 }
 
 model Tag {
-  id String @id @default(cuid())
-
-  slug String @unique
-
-  name String
-
+  id    String    @id @default(cuid())
+  slug  String    @unique
+  name  String
   posts PostTag[]
 
   @@index([slug])
 }
 
 model Post {
-  id String @id @default(cuid())
-
-  slug String @unique
-
-  headline String
-
-  headlineHi String?
-
-  dek String @db.Text
-
-  dekHi String?
-
-  body String @db.Text
-
-  bodyHi String?
-
-  status PostStatus @default(DRAFT)
-
+  id               String     @id @default(cuid())
+  slug             String     @unique
+  headline         String
+  dek              String
+  body             String
+  status           PostStatus @default(DRAFT)
   featuredImageUrl String
-
   featuredImageAlt String
-
-  metaDescription String?
-
-  readingTimeMin Int @default(3)
-
-  views Int @default(0)
-
-  isBreaking Boolean @default(false)
-
-  isLive Boolean @default(false)
-
-  locale Locale @default(EN)
-
-  publishedAt DateTime?
-
-  scheduledAt DateTime?
-
-  createdAt DateTime @default(now())
-
-  updatedAt DateTime @updatedAt
-
-  authorId String
-
-  author User @relation("PostAuthor", fields: [authorId], references: [id])
-
-  categoryId String
-
-  category Category @relation(fields: [categoryId], references: [id])
-
-  tags PostTag[]
-
-  comments Comment[]
-
-  bookmarks Bookmark[]
-
-  media Media[]
-
-  // IMPORTANT SPEED INDEXES
+  metaDescription  String?
+  readingTimeMin   Int        @default(3)
+  views            Int        @default(0)
+  isBreaking       Boolean    @default(false)
+  isLive           Boolean    @default(false)
+  locale           Locale     @default(EN)
+  publishedAt      DateTime?
+  scheduledAt      DateTime?
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+  authorId         String
+  categoryId       String
+  bodyHi           String?
+  dekHi            String?
+  headlineHi       String?
+  bookmarks        Bookmark[]
+  comments         Comment[]
+  media            Media[]
+  author           User       @relation("PostAuthor", fields: [authorId], references: [id])
+  category         Category   @relation(fields: [categoryId], references: [id])
+  tags             PostTag[]
 
   @@index([status])
   @@index([status, publishedAt])
@@ -246,38 +126,24 @@ model Post {
 
 model PostTag {
   postId String
-
-  tagId String
-
-  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
-
-  tag Tag @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  tagId  String
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  tag    Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
 
   @@id([postId, tagId])
   @@index([tagId])
 }
 
-// ---------- Comments ----------
-
 model Comment {
-  id String @id @default(cuid())
-
-  status CommentStatus @default(PENDING)
-
-  text String @db.Text
-
-  likes Int @default(0)
-
-  createdAt DateTime @default(now())
-
-  postId String
-
-  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
-
-  authorId String
-
-  author User @relation(fields: [authorId], references: [id])
-
+  id           String        @id @default(cuid())
+  text         String
+  likes        Int           @default(0)
+  createdAt    DateTime      @default(now())
+  postId       String
+  authorId     String
+  status       CommentStatus @default(PENDING)
+  author       User          @relation(fields: [authorId], references: [id])
+  post         Post          @relation(fields: [postId], references: [id], onDelete: Cascade)
   likesByUsers CommentLike[]
 
   @@index([postId])
@@ -287,135 +153,88 @@ model Comment {
 }
 
 model CommentLike {
-  id String @id @default(cuid())
-
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now())
-
   commentId String
-
-  comment Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
-
-  userId String
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([commentId, userId])
   @@index([userId])
 }
 
 model Bookmark {
-  id String @id @default(cuid())
-
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now())
-
-  userId String
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  postId String
-
-  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  userId    String
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, postId])
   @@index([postId])
 }
 
-// ---------- Media ----------
-
 model Media {
-  id String @id @default(cuid())
-
-  url String
-
-  type MediaType
-
-  altText String?
-
-  createdAt DateTime @default(now())
-
-  postId String?
-
-  post Post? @relation(fields: [postId], references: [id], onDelete: SetNull)
+  id        String    @id @default(cuid())
+  url       String
+  type      MediaType
+  altText   String?
+  createdAt DateTime  @default(now())
+  postId    String?
+  post      Post?     @relation(fields: [postId], references: [id])
 
   @@index([postId])
 }
 
-// ---------- Monetization ----------
-
 model Advertisement {
-  id String @id @default(cuid())
-
-  name String
-
-  placement AdPlacement
-
-  imageUrl String
-
-  targetUrl String
-
-  status AdStatus @default(ACTIVE)
-
-  startDate DateTime?
-
-  endDate DateTime?
-
-  impressions Int @default(0)
-
-  clicks Int @default(0)
-
-  createdAt DateTime @default(now())
+  id          String      @id @default(cuid())
+  name        String
+  placement   AdPlacement
+  imageUrl    String
+  targetUrl   String
+  status      AdStatus    @default(ACTIVE)
+  startDate   DateTime?
+  endDate     DateTime?
+  impressions Int         @default(0)
+  clicks      Int         @default(0)
+  createdAt   DateTime    @default(now())
 
   @@index([placement, status])
 }
 
 model NewsletterSubscriber {
-  id String @id @default(cuid())
-
-  email String @unique
-
-  active Boolean @default(true)
-
+  id           String   @id @default(cuid())
+  email        String   @unique
+  active       Boolean  @default(true)
   subscribedAt DateTime @default(now())
 }
 
 model Redirect {
-  id String @id @default(cuid())
-
-  fromPath String @unique
-
-  toPath String
-
-  statusCode Int @default(301)
+  id         String @id @default(cuid())
+  fromPath   String @unique
+  toPath     String
+  statusCode Int    @default(301)
 }
 
 model Page {
-  id String @id @default(cuid())
-
-  slug String @unique
-
-  title String
-
-  content String @db.Text
-
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  title     String
+  content   String
   updatedAt DateTime @updatedAt
 }
 
 model AuditLog {
-  id String @id @default(cuid())
-
-  action String
-
+  id         String   @id @default(cuid())
+  action     String
   entityType String
-
-  entityId String
-
-  metadata Json?
-
-  createdAt DateTime @default(now())
-
-  userId String
-
-  user User @relation(fields: [userId], references: [id])
+  entityId   String
+  metadata   Json?
+  createdAt  DateTime @default(now())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
 
   @@index([entityType, entityId])
   @@index([userId])
@@ -483,45 +302,35 @@ model Menu {
   id        String     @id @default(cuid())
   name      String
   location  String?
-  items     MenuItem[]
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
+  items     MenuItem[]
 
   @@index([location])
 }
 
 model MenuItem {
-  id     String @id @default(cuid())
-  menuId String
-
-  title  String
-  url    String
-  order  Int     @default(0)
-  active Boolean @default(true)
-
-  menu Menu @relation(fields: [menuId], references: [id], onDelete: Cascade)
-
+  id        String   @id @default(cuid())
+  menuId    String
+  title     String
+  url       String
+  order     Int      @default(0)
+  active    Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  menu      Menu     @relation(fields: [menuId], references: [id], onDelete: Cascade)
 
   @@index([menuId])
 }
 
 model Notification {
-  id String @id @default(cuid())
-
-  title String
-
-  titleHi String?
-
-  body String
-
-  bodyHi String?
-
-  active Boolean @default(true)
-
+  id        String   @id @default(cuid())
+  title     String
+  titleHi   String?
+  body      String
+  bodyHi    String?
+  active    Boolean  @default(true)
   createdAt DateTime @default(now())
-
   updatedAt DateTime @updatedAt
 
   @@index([active])
@@ -533,25 +342,66 @@ model WidgetArea {
   slug      String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  widgets Widget[]
+  widgets   Widget[]
 }
 
 model Widget {
-  id        String   @id @default(cuid())
+  id        String     @id @default(cuid())
   areaId    String
   name      String
   slug      String
-  enabled   Boolean  @default(true)
-  order     Int      @default(0)
+  enabled   Boolean    @default(true)
+  order     Int        @default(0)
   config    Json?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  area WidgetArea @relation(fields: [areaId], references: [id], onDelete: Cascade)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  area      WidgetArea @relation(fields: [areaId], references: [id], onDelete: Cascade)
 
   @@index([areaId])
   @@index([enabled])
   @@index([order])
 }
 
+enum Role {
+  READER
+  JOURNALIST
+  EDITOR
+  ADMIN
+}
+
+enum PostStatus {
+  DRAFT
+  SCHEDULED
+  PUBLISHED
+  ARCHIVED
+}
+
+enum AdPlacement {
+  LEADERBOARD
+  SIDEBAR
+  INLINE
+  STICKY
+  NATIVE
+}
+
+enum AdStatus {
+  ACTIVE
+  PAUSED
+  ENDED
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
+}
+
+enum Locale {
+  EN
+  HI
+}
+
+enum CommentStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}

@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { MenusManager } from "@/components/admin/menus/MenusManager";
 import { getAdminMenus } from "@/lib/data/menus";
 

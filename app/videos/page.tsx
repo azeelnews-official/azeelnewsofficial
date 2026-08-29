@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import type { Metadata } from "next";
 import { Film } from "lucide-react";
 import { TopBar } from "@/components/layout/TopBar";

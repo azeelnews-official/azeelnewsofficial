@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { ArrowDown, ArrowUp, LayoutGrid, Loader2 } from "lucide-react";
+import { useState } from "react";
+import { ArrowDown, ArrowUp, LayoutGrid } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface Widget {
@@ -19,39 +19,14 @@ interface WidgetArea {
   widgets: Widget[];
 }
 
-export function WidgetsManager() {
-  const [areas, setAreas] = useState<WidgetArea[]>([]);
-  const [loading, setLoading] = useState(true);
+export function WidgetsManager({
+  initialAreas = [],
+}: {
+  initialAreas?: WidgetArea[];
+}) {
+  const [areas, setAreas] = useState<WidgetArea[]>(initialAreas);
   const [saving, setSaving] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-
-  async function loadWidgets() {
-    try {
-      setLoading(true);
-      setError(null);
-
-      const response = await fetch("/api/admin/widgets", {
-        method: "GET",
-        cache: "no-store",
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || "Failed to load widgets.");
-      }
-
-      setAreas(data.areas ?? []);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to load widgets.");
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  useEffect(() => {
-    loadWidgets();
-  }, []);
 
   async function updateWidget(
     widgetId: string,
@@ -191,19 +166,12 @@ export function WidgetsManager() {
           : "Failed to save widget order."
       );
 
-      await loadWidgets();
+      // Keep the optimistic UI unchanged here. The server rejected
+      // the reorder, so surface the error instead of issuing a second
+      // state-changing request from an effect.
     } finally {
       setSaving(null);
     }
-  }
-
-  if (loading) {
-    return (
-      <div className="flex items-center gap-2 py-10 text-sm text-ink-300">
-        <Loader2 size={16} className="animate-spin" />
-        Loading widgets...
-      </div>
-    );
   }
 
   return (
