@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getCurrentSession } from "@/lib/auth/session";
 import { PostStatus, Role } from "@prisma/client";
+import { submitToIndexNow } from "@/lib/indexnow";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -509,6 +510,10 @@ export async function PATCH(
           return post;
         }
       );
+
+    if (updated.status === PostStatus.PUBLISHED) {
+      void submitToIndexNow(updated.slug);
+    }
 
     return NextResponse.json({
       success: true,
