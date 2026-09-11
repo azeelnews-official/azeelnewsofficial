@@ -50,7 +50,11 @@ export function WidgetsManager() {
   }
 
   useEffect(() => {
-    loadWidgets();
+    async function initializeWidgets() {
+      await loadWidgets();
+    }
+
+    void initializeWidgets();
   }, []);
 
   async function updateWidget(

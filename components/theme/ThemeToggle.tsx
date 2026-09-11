@@ -15,8 +15,11 @@ export function ThemeToggle() {
     const isDark = saved === "dark";
 
     document.documentElement.classList.toggle("dark", isDark);
-    setDark(isDark);
-    setReady(true);
+
+    queueMicrotask(() => {
+      setDark(isDark);
+      setReady(true);
+    });
   }, []);
 
   function toggle() {
