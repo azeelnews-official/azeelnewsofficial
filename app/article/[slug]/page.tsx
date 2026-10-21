@@ -107,6 +107,7 @@ const getArticle = unstable_cache(
 
         id:true,
         slug:true,
+        categoryId:true,
         headline:true,
         headlineHi:true,
 
@@ -170,6 +171,55 @@ const getArticle = unstable_cache(
 
 );
 
+
+const getRelatedArticles = unstable_cache(
+  async (categoryId: string, postId: string) =>
+    prisma.post.findMany({
+      where: {
+        status: "PUBLISHED",
+        categoryId,
+        id: { not: postId },
+      },
+      select: {
+        id: true,
+        slug: true,
+        headline: true,
+        dek: true,
+        featuredImageUrl: true,
+        featuredImageAlt: true,
+        readingTimeMin: true,
+        views: true,
+        isBreaking: true,
+        isLive: true,
+        publishedAt: true,
+        updatedAt: true,
+        author: {
+          select: {
+            name: true,
+            image: true,
+            role: true,
+          },
+        },
+        category: {
+          select: {
+            slug: true,
+            name: true,
+          },
+        },
+        tags: {
+          select: {
+            tag: {
+              select: { name: true },
+            },
+          },
+        },
+      },
+      orderBy: { publishedAt: "desc" },
+      take: 4,
+    }),
+  ["related-articles"],
+  { revalidate: 60 }
+);
 
 export async function generateMetadata({
   params,
@@ -254,79 +304,7 @@ export default async function ArticlePage({
 
 
 
-  const relatedPosts = await prisma.post.findMany({
-
-    where:{
-
-      status:"PUBLISHED",
-
-      categoryId:post.categoryId,
-
-      id:{
-        not:post.id
-      }
-
-    },
-
-
-    select:{
-
-      id:true,
-      slug:true,
-      headline:true,
-      dek:true,
-
-      featuredImageUrl:true,
-      featuredImageAlt:true,
-
-      readingTimeMin:true,
-      views:true,
-
-      isBreaking:true,
-      isLive:true,
-
-      publishedAt:true,
-      updatedAt:true,
-
-
-      author:{
-        select:{
-          name:true,
-          image:true,
-          role:true
-        }
-      },
-
-
-      category:{
-        select:{
-          slug:true,
-          name:true
-        }
-      },
-
-
-      tags:{
-        select:{
-          tag:{
-            select:{
-              name:true
-            }
-          }
-        }
-      }
-
-    },
-
-
-    orderBy:{
-      publishedAt:"desc"
-    },
-
-
-    take:4
-
-  });
+  const relatedPosts = await getRelatedArticles(post.categoryId, post.id);
 
 
 
